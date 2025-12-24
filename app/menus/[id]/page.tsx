@@ -7,6 +7,7 @@ import Restaurant from '@/models/Restaurant';
 import Link from 'next/link';
 import QRCodeDisplay from '@/components/QRCodeDisplay';
 import MenuUrlCopy from '@/components/MenuUrlCopy';
+import DeleteMenuItemButton from '@/components/DeleteMenuItemButton';
 
 async function getMenu(id: string, userId: string) {
   await connectDB();
@@ -145,6 +146,10 @@ export default async function MenuManagementPage({
                           >
                             Edit
                           </Link>
+                          <DeleteMenuItemButton
+                            menuId={params.id}
+                            itemId={item._id}
+                          />
                         </div>
                       </div>
                     </div>
