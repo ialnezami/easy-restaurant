@@ -87,12 +87,15 @@ export default async function RestaurantDetailPage({
                 </p>
               )}
             </div>
-            <Link
-              href={`/restaurants/${params.id}/edit`}
-              className="text-blue-600 hover:text-blue-700 text-sm"
-            >
-              Edit
-            </Link>
+            <div className="flex space-x-4">
+              <Link
+                href={`/restaurants/${params.id}/edit`}
+                className="text-blue-600 hover:text-blue-700 text-sm"
+              >
+                Edit
+              </Link>
+              <DeleteRestaurantButton restaurantId={params.id} />
+            </div>
           </div>
 
           {restaurant.contactInfo && (
