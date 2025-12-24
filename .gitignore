@@ -35,4 +35,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# testing
+/test-results/
+/playwright-report/
+/playwright/.cache/
+coverage/
+.vitest/
+
 
