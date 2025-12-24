@@ -5,6 +5,7 @@ import connectDB from '@/lib/mongodb';
 import Restaurant from '@/models/Restaurant';
 import Menu from '@/models/Menu';
 import Link from 'next/link';
+import DeleteRestaurantButton from '@/components/DeleteRestaurantButton';
 
 async function getRestaurant(id: string, userId: string) {
   await connectDB();
