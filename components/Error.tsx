@@ -11,3 +11,4 @@ export default function Error({ message = 'An error occurred' }: ErrorProps) {
   );
 }
 
+

@@ -10,3 +10,4 @@ export const config = {
   matcher: ['/dashboard/:path*', '/restaurants/:path*', '/menus/:path*'],
 };
 
+
