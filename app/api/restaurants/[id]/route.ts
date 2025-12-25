@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import Restaurant from '@/models/Restaurant';
+import { getUserPermissions } from '@/lib/permissions';
 
 export async function PUT(
   request: Request,
@@ -78,14 +79,28 @@ export async function DELETE(
 
     await connectDB();
 
-    const restaurant = await Restaurant.findOne({
-      _id: params.id,
-      owner: session.user.id,
-    });
+    // Check permissions
+    const permissions = await getUserPermissions(
+      session.user.id,
+      session.user.role
+    );
+    const canManage = await permissions.canManageRestaurant(
+      params.id,
+      session.user.id
+    );
+
+    if (!canManage) {
+      return NextResponse.json(
+        { error: 'Unauthorized to delete this restaurant' },
+        { status: 403 }
+      );
+    }
+
+    const restaurant = await Restaurant.findById(params.id);
 
     if (!restaurant) {
       return NextResponse.json(
-        { error: 'Restaurant not found or unauthorized' },
+        { error: 'Restaurant not found' },
         { status: 404 }
       );
     }

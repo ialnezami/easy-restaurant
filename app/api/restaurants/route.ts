@@ -48,6 +48,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const permissions = await getUserPermissions(
+      session.user.id,
+      session.user.role
+    );
+
+    if (!permissions.canCreateRestaurant) {
+      return NextResponse.json(
+        { error: 'You do not have permission to create restaurants' },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
     const { name, addresses, contactInfo } = body;
 
@@ -63,6 +75,7 @@ export async function POST(request: Request) {
     const restaurant = await Restaurant.create({
       name,
       owner: session.user.id,
+      managers: [],
       addresses: addresses || [],
       contactInfo: contactInfo || {},
     });
