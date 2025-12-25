@@ -400,10 +400,27 @@ async function seed() {
       }
     }
 
+    // Assign manager to first restaurant
+    if (restaurantsData.length > 0) {
+      const firstRestaurant = await Restaurant.findOne({ name: restaurantsData[0].name });
+      if (firstRestaurant && managerUser) {
+        firstRestaurant.managers = [managerUser._id];
+        await firstRestaurant.save();
+        console.log(`✅ Assigned manager to ${firstRestaurant.name}`);
+      }
+    }
+
     console.log('\n🎉 Seed completed successfully!');
     console.log('\n📝 Login credentials:');
-    console.log('   Email: demo@restaurant.com');
-    console.log('   Password: password123');
+    console.log('   Owner:');
+    console.log('     Email: demo@restaurant.com');
+    console.log('     Password: password123');
+    console.log('   Admin:');
+    console.log('     Email: admin@restaurant.com');
+    console.log('     Password: admin123');
+    console.log('   Manager:');
+    console.log('     Email: manager@restaurant.com');
+    console.log('     Password: manager123');
     console.log('\n✨ You can now login and explore the sample restaurants!');
     
     process.exit(0);

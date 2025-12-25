@@ -11,16 +11,28 @@ async function clearSeed() {
     await connectDB();
     console.log('✅ Connected to database');
 
-    // Find seed user
-    const seedUser = await User.findOne({ email: 'demo@restaurant.com' });
-    
-    if (!seedUser) {
+    // Find seed users
+    const seedUsers = await User.find({
+      email: {
+        $in: [
+          'demo@restaurant.com',
+          'admin@restaurant.com',
+          'manager@restaurant.com',
+        ],
+      },
+    });
+
+    if (seedUsers.length === 0) {
       console.log('⚠️  No seed data found. Nothing to clear.');
       process.exit(0);
     }
 
-    // Find all restaurants owned by seed user
-    const restaurants = await Restaurant.find({ owner: seedUser._id });
+    const seedUserIds = seedUsers.map((u) => u._id);
+
+    // Find all restaurants owned by seed users
+    const restaurants = await Restaurant.find({
+      owner: { $in: seedUserIds },
+    });
     const restaurantIds = restaurants.map(r => r._id);
 
     // Find all menus for these restaurants
@@ -53,9 +65,9 @@ async function clearSeed() {
       console.log(`✅ Deleted ${restaurantIds.length} restaurants`);
     }
 
-    // Delete seed user
-    await User.findByIdAndDelete(seedUser._id);
-    console.log('✅ Deleted seed user');
+    // Delete seed users
+    await User.deleteMany({ _id: { $in: seedUserIds } });
+    console.log(`✅ Deleted ${seedUsers.length} seed users`);
 
     console.log('\n✨ Seed data cleared successfully!');
     
