@@ -3,6 +3,13 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import connectDB from './mongodb';
 import User from '@/models/User';
 
+// Validate required environment variables
+if (!process.env.NEXTAUTH_SECRET) {
+  throw new Error(
+    'NEXTAUTH_SECRET is not set. Please set it in your environment variables.'
+  );
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -64,6 +71,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
+  // Explicitly set the URL for production
+  ...(process.env.NEXTAUTH_URL && { url: process.env.NEXTAUTH_URL }),
 };
 
 
