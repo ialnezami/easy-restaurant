@@ -50,7 +50,7 @@ export default async function PublicMenuPage({
             Menu Not Found
           </h1>
           <p className="text-gray-600">
-            The menu you're looking for doesn't exist or has been removed.
+            The menu you&apos;re looking for doesn&apos;t exist or has been removed.
           </p>
         </div>
       </div>
@@ -92,7 +92,7 @@ export default async function PublicMenuPage({
         uncategorized.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <p className="text-gray-500 text-lg">
-              This menu doesn't have any items yet.
+              This menu doesn&apos;t have any items yet.
             </p>
           </div>
         ) : (

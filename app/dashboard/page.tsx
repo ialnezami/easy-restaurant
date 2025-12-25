@@ -50,7 +50,7 @@ export default async function DashboardPage() {
         {restaurants.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg mb-4">
-              You don't have any restaurants yet.
+              You don&apos;t have any restaurants yet.
             </p>
             <Link
               href="/restaurants/new"
