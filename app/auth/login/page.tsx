@@ -26,13 +26,23 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setError(result.error);
-      } else {
+        // Provide more specific error messages
+        if (result.error.includes('Configuration')) {
+          setError('Server configuration error. Please contact support.');
+        } else if (result.error.includes('Invalid email or password')) {
+          setError('Invalid email or password. Please check your credentials or create a new account.');
+        } else {
+          setError(result.error);
+        }
+      } else if (result?.ok) {
         router.push('/dashboard');
         router.refresh();
+      } else {
+        setError('Login failed. Please try again.');
       }
-    } catch (err) {
-      setError('An unexpected error occurred');
+    } catch (err: any) {
+      console.error('Login error:', err);
+      setError(err.message || 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }
