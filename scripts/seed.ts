@@ -2,7 +2,6 @@ import connectDB from '../lib/mongodb';
 import User from '../models/User';
 import Restaurant from '../models/Restaurant';
 import Menu, { MenuItem } from '../models/Menu';
-import bcrypt from 'bcryptjs';
 
 async function seed() {
   try {
@@ -21,12 +20,11 @@ async function seed() {
 
     console.log('📦 Database is empty. Creating seed data...');
 
-    // Create seed user
-    const hashedPassword = await bcrypt.hash('password123', 10);
+    // Create seed user (password will be hashed automatically by User model)
     const seedUser = await User.create({
       name: 'Demo Restaurant Owner',
       email: 'demo@restaurant.com',
-      password: hashedPassword,
+      password: 'password123',
     });
     console.log('✅ Created seed user');
 
