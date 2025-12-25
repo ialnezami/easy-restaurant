@@ -49,6 +49,7 @@ export default function QRCodeDisplay({ url }: QRCodeDisplayProps) {
 
   return (
     <div className="flex flex-col items-center">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={qrCodeDataUrl}
         alt="QR Code"
