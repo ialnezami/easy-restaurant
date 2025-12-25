@@ -20,6 +20,14 @@ export default function Navbar() {
               <div className="text-gray-500">Loading...</div>
             ) : session ? (
               <>
+                {session.user.role === 'admin' && (
+                  <Link
+                    href="/admin"
+                    className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Admin
+                  </Link>
+                )}
                 <Link
                   href="/dashboard"
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
