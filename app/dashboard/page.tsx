@@ -5,11 +5,20 @@ import connectDB from '@/lib/mongodb';
 import Restaurant from '@/models/Restaurant';
 import Link from 'next/link';
 
-async function getRestaurants(userId: string) {
+async function getRestaurants(userId: string, userRole: string) {
   await connectDB();
-  const restaurants = await Restaurant.find({ owner: userId }).sort({
-    createdAt: -1,
-  });
+  const { UserRole } = await import('@/models/User');
+
+  // Admin can see all restaurants
+  if (userRole === UserRole.ADMIN) {
+    const restaurants = await Restaurant.find({}).sort({ createdAt: -1 });
+    return JSON.parse(JSON.stringify(restaurants));
+  }
+
+  // Owners and managers see restaurants they own or manage
+  const restaurants = await Restaurant.find({
+    $or: [{ owner: userId }, { managers: userId }],
+  }).sort({ createdAt: -1 });
   return JSON.parse(JSON.stringify(restaurants));
 }
 

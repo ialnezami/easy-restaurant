@@ -7,12 +7,17 @@ import Menu from '@/models/Menu';
 import Link from 'next/link';
 import DeleteRestaurantButton from '@/components/DeleteRestaurantButton';
 
-async function getRestaurant(id: string, userId: string) {
+async function getRestaurant(id: string, userId: string, userRole: string) {
   await connectDB();
-  const restaurant = await Restaurant.findOne({
-    _id: id,
-    owner: userId,
-  });
+  const { getUserPermissions } = await import('@/lib/permissions');
+  const permissions = await getUserPermissions(userId, userRole);
+  const canManage = await permissions.canManageRestaurant(id, userId);
+
+  if (!canManage) {
+    return null;
+  }
+
+  const restaurant = await Restaurant.findById(id);
   return restaurant ? JSON.parse(JSON.stringify(restaurant)) : null;
 }
 
@@ -35,7 +40,11 @@ export default async function RestaurantDetailPage({
     redirect('/auth/login');
   }
 
-  const restaurant = await getRestaurant(params.id, session.user.id);
+  const restaurant = await getRestaurant(
+    params.id,
+    session.user.id,
+    session.user.role
+  );
 
   if (!restaurant) {
     return (
