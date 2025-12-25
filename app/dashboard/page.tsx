@@ -29,7 +29,10 @@ export default async function DashboardPage() {
     redirect('/auth/login');
   }
 
-  const restaurants = await getRestaurants(session.user.id);
+  const restaurants = await getRestaurants(
+    session.user.id,
+    session.user.role
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

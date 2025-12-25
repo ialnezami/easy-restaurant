@@ -20,13 +20,30 @@ async function seed() {
 
     console.log('📦 Database is empty. Creating seed data...');
 
-    // Create seed user (password will be hashed automatically by User model)
+    // Create seed users (password will be hashed automatically by User model)
     const seedUser = await User.create({
       name: 'Demo Restaurant Owner',
       email: 'demo@restaurant.com',
       password: 'password123',
+      role: 'owner',
     });
-    console.log('✅ Created seed user');
+    console.log('✅ Created seed user (owner)');
+
+    const adminUser = await User.create({
+      name: 'Admin User',
+      email: 'admin@restaurant.com',
+      password: 'admin123',
+      role: 'admin',
+    });
+    console.log('✅ Created admin user');
+
+    const managerUser = await User.create({
+      name: 'Manager User',
+      email: 'manager@restaurant.com',
+      password: 'manager123',
+      role: 'manager',
+    });
+    console.log('✅ Created manager user');
 
     // Sample restaurants data
     const restaurantsData = [
