@@ -90,6 +90,12 @@ export default async function RestaurantDetailPage({
             </div>
             <div className="flex space-x-4">
               <Link
+                href={`/restaurants/${params.id}/managers`}
+                className="text-blue-600 hover:text-blue-700 text-sm"
+              >
+                Managers
+              </Link>
+              <Link
                 href={`/restaurants/${params.id}/edit`}
                 className="text-blue-600 hover:text-blue-700 text-sm"
               >

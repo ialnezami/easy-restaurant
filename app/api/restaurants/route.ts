@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { UserRole } from '@/models/User';
 import connectDB from '@/lib/mongodb';
 import Restaurant from '@/models/Restaurant';
+import { getUserPermissions } from '@/lib/permissions';
 
 export async function GET() {
   try {
@@ -14,8 +16,18 @@ export async function GET() {
 
     await connectDB();
 
+    // Admin can see all restaurants
+    if (session.user.role === UserRole.ADMIN) {
+      const restaurants = await Restaurant.find({}).sort({ createdAt: -1 });
+      return NextResponse.json({ restaurants }, { status: 200 });
+    }
+
+    // Owners see their restaurants, managers see restaurants they're assigned to
     const restaurants = await Restaurant.find({
-      owner: session.user.id,
+      $or: [
+        { owner: session.user.id },
+        { managers: session.user.id },
+      ],
     }).sort({ createdAt: -1 });
 
     return NextResponse.json({ restaurants }, { status: 200 });
