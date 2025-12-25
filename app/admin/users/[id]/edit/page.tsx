@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/auth';
-import { UserRole } from '@/models/User';
+import { UserRole } from '@/types/user';
 import connectDB from '@/lib/mongodb';
 import User from '@/models/User';
 import UserEditForm from '@/components/UserEditForm';

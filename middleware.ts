@@ -1,6 +1,6 @@
 import { withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
-import { UserRole } from './models/User';
+import { UserRole } from './types/user';
 
 export default withAuth(
   function middleware(req) {

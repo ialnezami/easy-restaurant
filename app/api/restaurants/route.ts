@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { UserRole } from '@/models/User';
+import { UserRole } from '@/types/user';
 import connectDB from '@/lib/mongodb';
 import Restaurant from '@/models/Restaurant';
 import { getUserPermissions } from '@/lib/permissions';

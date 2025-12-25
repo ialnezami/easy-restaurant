@@ -1,11 +1,6 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
-
-export enum UserRole {
-  OWNER = 'owner',
-  MANAGER = 'manager',
-  ADMIN = 'admin',
-}
+import { UserRole } from '@/types/user';
 
 export interface IUser extends Document {
   name: string;
@@ -60,7 +55,8 @@ UserSchema.pre('save', async function (next) {
   }
 
   const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  const password = this.password as string;
+  this.password = await bcrypt.hash(password, salt);
   next();
 });
 

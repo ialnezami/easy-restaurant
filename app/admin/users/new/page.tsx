@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Error from '@/components/Error';
-import { UserRole } from '@/models/User';
+import { UserRole } from '@/types/user';
 
 export default function NewUserPage() {
   const router = useRouter();

@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 async function getRestaurants(userId: string, userRole: string) {
   await connectDB();
-  const { UserRole } = await import('@/models/User');
+  const { UserRole } = await import('@/types/user');
 
   // Admin can see all restaurants
   if (userRole === UserRole.ADMIN) {

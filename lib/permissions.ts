@@ -1,4 +1,4 @@
-import { UserRole } from '@/models/User';
+import { UserRole } from '@/types/user';
 import Restaurant from '@/models/Restaurant';
 
 export interface UserPermissions {

@@ -81,8 +81,7 @@ const MenuSchema: Schema = new Schema(
   }
 );
 
-// Create indexes for better query performance
-MenuSchema.index({ slug: 1 });
+// Create index for restaurant (slug already has unique index)
 MenuSchema.index({ restaurant: 1 });
 
 const MenuItem: Model<IMenuItem> =
