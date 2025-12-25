@@ -60,7 +60,15 @@ openssl rand -base64 32
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. (Optional) Seed the database with sample data:
+```bash
+npm run seed
+```
+This will create sample restaurants with menus if your database is empty. Login credentials:
+- Email: `demo@restaurant.com`
+- Password: `password123`
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
@@ -78,6 +86,34 @@ easy-restaurant/
 ├── models/             # MongoDB models
 └── types/              # TypeScript type definitions
 ```
+
+## Database Seeding
+
+The project includes a seed script to populate the database with sample data for development and testing.
+
+### Seed Database
+
+```bash
+npm run seed
+```
+
+This creates:
+- 1 demo user account
+- 4 sample restaurants (Italian, Japanese, Burger, Coffee shop)
+- Multiple menus per restaurant
+- Menu items with categories
+
+The script only seeds if the database is empty to prevent overwriting existing data.
+
+### Clear Seed Data
+
+```bash
+npm run seed:clear
+```
+
+Removes all seed data (demo user, restaurants, menus, and menu items).
+
+See `scripts/README.md` for more details.
 
 ## Usage
 
