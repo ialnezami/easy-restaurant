@@ -11,6 +11,7 @@ export interface IAddress {
 export interface IRestaurant extends Document {
   name: string;
   owner: mongoose.Types.ObjectId;
+  managers: mongoose.Types.ObjectId[];
   addresses: IAddress[];
   contactInfo: {
     phone?: string;
@@ -55,6 +56,12 @@ const RestaurantSchema: Schema = new Schema(
       ref: 'User',
       required: true,
     },
+    managers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     addresses: {
       type: [AddressSchema],
       default: [],
