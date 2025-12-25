@@ -23,28 +23,44 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Please provide email and password');
         }
 
-        await connectDB();
+        try {
+          await connectDB();
 
-        const user = await User.findOne({ email: credentials.email }).select(
-          '+password'
-        );
+          // Normalize email to lowercase to match how it's stored in the database
+          const normalizedEmail = credentials.email.toLowerCase().trim();
 
-        if (!user) {
-          throw new Error('Invalid email or password');
+          const user = await User.findOne({ email: normalizedEmail }).select(
+            '+password'
+          );
+
+          if (!user) {
+            throw new Error('Invalid email or password');
+          }
+
+          const isPasswordValid = await user.comparePassword(credentials.password);
+
+          if (!isPasswordValid) {
+            throw new Error('Invalid email or password');
+          }
+
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            name: user.name,
+            role: user.role || 'owner',
+          };
+        } catch (error: any) {
+          // Log the error for debugging (but don't expose sensitive info to client)
+          console.error('Authentication error:', error.message);
+          
+          // Re-throw authentication errors as-is
+          if (error.message === 'Invalid email or password') {
+            throw error;
+          }
+          
+          // For other errors (like DB connection), throw a generic error
+          throw new Error('Authentication failed. Please try again.');
         }
-
-        const isPasswordValid = await user.comparePassword(credentials.password);
-
-        if (!isPasswordValid) {
-          throw new Error('Invalid email or password');
-        }
-
-        return {
-          id: user._id.toString(),
-          email: user.email,
-          name: user.name,
-          role: user.role || 'owner',
-        };
       },
     }),
   ],

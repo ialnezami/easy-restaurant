@@ -22,8 +22,11 @@ export async function POST(request: Request) {
 
     await connectDB();
 
+    // Normalize email to lowercase to match how it's stored in the database
+    const normalizedEmail = email.toLowerCase().trim();
+
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return NextResponse.json(
         { error: 'User with this email already exists' },
@@ -31,10 +34,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create new user
+    // Create new user (Mongoose will also normalize email due to schema settings)
     const user = await User.create({
       name,
-      email,
+      email: normalizedEmail,
       password,
     });
 
