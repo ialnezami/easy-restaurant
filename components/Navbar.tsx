@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -16,6 +17,7 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
+            <LanguageSwitcher />
             {status === 'loading' ? (
               <div className="text-gray-500">Loading...</div>
             ) : session ? (
