@@ -48,6 +48,10 @@ MONGODB_URI=mongodb://localhost:27017/easy-restaurant
 
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your-secret-key-here-generate-a-random-string
+
+# Cloudinary Configuration (for image uploads)
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_UPLOAD_PRESET=your-upload-preset
 ```
 
 To generate a secure `NEXTAUTH_SECRET`, you can run:
@@ -200,6 +204,8 @@ npm run lint
 | `MONGODB_URI` | MongoDB connection string | Yes |
 | `NEXTAUTH_URL` | Base URL of your application | Yes |
 | `NEXTAUTH_SECRET` | Secret key for NextAuth.js | Yes |
+| `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` | Your Cloudinary cloud name | Yes (for image uploads) |
+| `CLOUDINARY_UPLOAD_PRESET` | Cloudinary unsigned upload preset | Yes (for image uploads) |
 
 ## Future Features
 

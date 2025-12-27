@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import Error from '@/components/Error';
+import ImageUpload from '@/components/ImageUpload';
 
 export default function NewMenuItemPage() {
   const router = useRouter();
@@ -162,20 +163,10 @@ export default function NewMenuItemPage() {
             </div>
 
             <div>
-              <label
-                htmlFor="image"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Image URL (optional)
-              </label>
-              <input
-                type="url"
-                id="image"
-                name="image"
+              <ImageUpload
                 value={formData.image}
-                onChange={handleChange}
-                placeholder="https://example.com/image.jpg"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                onChange={(url) => setFormData({ ...formData, image: url })}
+                label="Image (optional)"
               />
             </div>
 
