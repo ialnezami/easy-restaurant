@@ -20,6 +20,8 @@ export interface IRestaurant extends Document {
   };
   coverImage?: string; // Main logo/cover image
   images?: string[]; // Array of additional images
+  primaryColor?: string; // Primary brand color (hex)
+  secondaryColor?: string; // Secondary brand color (hex)
   createdAt: Date;
   updatedAt: Date;
 }
@@ -85,6 +87,14 @@ const RestaurantSchema: Schema = new Schema(
     images: {
       type: [String],
       default: [],
+    },
+    primaryColor: {
+      type: String,
+      default: '#3B82F6', // Default blue
+    },
+    secondaryColor: {
+      type: String,
+      default: '#1E40AF', // Default darker blue
     },
   },
   {

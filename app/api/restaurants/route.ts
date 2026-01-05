@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { name, addresses, contactInfo, coverImage, images } = body;
+    const { name, addresses, contactInfo, coverImage, images, primaryColor, secondaryColor } = body;
 
     if (!name) {
       return NextResponse.json(
@@ -80,6 +80,8 @@ export async function POST(request: Request) {
       contactInfo: contactInfo || {},
       coverImage: coverImage || null,
       images: images || [],
+      primaryColor: primaryColor || '#3B82F6',
+      secondaryColor: secondaryColor || '#1E40AF',
     });
 
     return NextResponse.json(
@@ -92,6 +94,8 @@ export async function POST(request: Request) {
           contactInfo: restaurant.contactInfo,
           coverImage: restaurant.coverImage,
           images: restaurant.images,
+          primaryColor: restaurant.primaryColor,
+          secondaryColor: restaurant.secondaryColor,
         },
       },
       { status: 201 }

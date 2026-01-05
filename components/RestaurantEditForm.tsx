@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Error from './Error';
 import ImageUpload from './ImageUpload';
 import ImageGallery from './ImageGallery';
+import ColorPicker from './ColorPicker';
 
 interface RestaurantEditFormProps {
   restaurant: {
@@ -43,6 +44,8 @@ export default function RestaurantEditForm({
     website: restaurant.contactInfo?.website || '',
     coverImage: restaurant.coverImage || '',
     images: restaurant.images || [],
+    primaryColor: restaurant.primaryColor || '#3B82F6',
+    secondaryColor: restaurant.secondaryColor || '#1E40AF',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -85,6 +88,8 @@ export default function RestaurantEditForm({
           },
           coverImage: formData.coverImage || null,
           images: formData.images,
+          primaryColor: formData.primaryColor,
+          secondaryColor: formData.secondaryColor,
         }),
       });
 
@@ -222,6 +227,33 @@ export default function RestaurantEditForm({
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="border-t pt-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Brand Colors
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ColorPicker
+              label="Primary Color"
+              value={formData.primaryColor}
+              onChange={(color) =>
+                setFormData({ ...formData, primaryColor: color })
+              }
+              defaultColor="#3B82F6"
+            />
+            <ColorPicker
+              label="Secondary Color"
+              value={formData.secondaryColor}
+              onChange={(color) =>
+                setFormData({ ...formData, secondaryColor: color })
+              }
+              defaultColor="#1E40AF"
+            />
+          </div>
+          <p className="mt-2 text-sm text-gray-500">
+            These colors will be used throughout your menu display to match your brand.
+          </p>
         </div>
 
         <div className="border-t pt-6">
