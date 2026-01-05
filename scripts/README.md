@@ -60,3 +60,4 @@ This will:
 - Seed data is useful for development, testing, and demonstrations
 - Make sure your MongoDB connection is configured in `.env.local` before running
 
+

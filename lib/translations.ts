@@ -405,3 +405,4 @@ export function t(lang: string, section: TranslationKey, key: string): string {
   return trans[section]?.[key] || translations.en[section]?.[key] || key;
 }
 
+

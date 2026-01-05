@@ -74,3 +74,4 @@ This should be sufficient for most small to medium restaurants.
   - Add file type and size validation (already implemented)
   - Use Cloudinary's moderation features for content filtering
 
+
