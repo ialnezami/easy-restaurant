@@ -7,7 +7,7 @@ import OrderStatusBadge from './OrderStatusBadge';
 import { useTranslations } from '@/lib/use-translations';
 import { getStaffTypeLabel } from '@/lib/order-translations';
 import Loading from './Loading';
-import Error from './Error';
+import ErrorComponent from './Error';
 
 interface Order {
   _id: string;
@@ -139,7 +139,7 @@ export default function OrderList({
   };
 
   if (loading) return <Loading />;
-  if (error) return <Error message={error} />;
+  if (error) return <ErrorComponent message={error} />;
 
   const staffTypes = ['grillade', 'sandwich', 'drinks', 'desserts', 'other'];
 
