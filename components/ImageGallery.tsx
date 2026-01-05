@@ -54,6 +54,7 @@ export default function ImageGallery({
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 50vw, 33vw"
+                  unoptimized={image.startsWith('http')}
                 />
                 <button
                   type="button"

@@ -97,6 +97,7 @@ export default function ImageUpload({
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized={preview.startsWith('http')}
             />
             <button
               type="button"

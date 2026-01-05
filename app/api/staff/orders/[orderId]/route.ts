@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import Order, { OrderStatus } from '@/models/Order';
 import User from '@/models/User';
+import { Types } from 'mongoose';
 
 export async function PUT(
   request: Request,
@@ -46,7 +47,7 @@ export async function PUT(
 
     // Assign order to staff
     if (assign === true) {
-      order.assignedStaff = session.user.id;
+      order.assignedStaff = new Types.ObjectId(session.user.id);
       
       // Auto-set staff type if user has one
       if (user.staffType && user.staffType.length > 0) {
