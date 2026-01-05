@@ -28,6 +28,7 @@ export const config = {
     '/restaurants/:path*',
     '/menus/:path*',
     '/admin/:path*',
+    '/staff/:path*',
   ],
 };
 

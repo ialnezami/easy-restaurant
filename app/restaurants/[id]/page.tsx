@@ -99,6 +99,12 @@ export default async function RestaurantDetailPage({
             </div>
             <div className="flex space-x-4">
               <Link
+                href={`/restaurants/${params.id}/orders`}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm font-medium"
+              >
+                Orders
+              </Link>
+              <Link
                 href={`/restaurants/${params.id}/managers`}
                 className="text-blue-600 hover:text-blue-700 text-sm"
               >

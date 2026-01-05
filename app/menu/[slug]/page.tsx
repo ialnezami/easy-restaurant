@@ -77,12 +77,22 @@ export default async function PublicMenuPage({
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            {menu.restaurant.name}
-          </h1>
-          {menu.name && (
-            <p className="text-xl text-gray-600">{menu.name}</p>
-          )}
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                {menu.restaurant.name}
+              </h1>
+              {menu.name && (
+                <p className="text-xl text-gray-600">{menu.name}</p>
+              )}
+            </div>
+            <Link
+              href={`/menu/${params.slug}/order`}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all"
+            >
+              Place Order
+            </Link>
+          </div>
         </div>
       </div>
 

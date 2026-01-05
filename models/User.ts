@@ -7,6 +7,8 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: UserRole;
+  staffType?: string[]; // ['grillade', 'sandwich', 'drinks', etc.]
+  restaurant?: mongoose.Types.ObjectId; // Which restaurant they work at (for staff)
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -40,6 +42,14 @@ const UserSchema: Schema = new Schema(
       type: String,
       enum: Object.values(UserRole),
       default: UserRole.OWNER,
+    },
+    staffType: {
+      type: [String],
+      default: [],
+    },
+    restaurant: {
+      type: Schema.Types.ObjectId,
+      ref: 'Restaurant',
     },
   },
   {

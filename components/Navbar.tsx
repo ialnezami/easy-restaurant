@@ -30,6 +30,14 @@ export default function Navbar() {
                     Admin
                   </Link>
                 )}
+                {(session.user.role === 'manager' || session.user.role === 'owner') && (
+                  <Link
+                    href="/staff/dashboard"
+                    className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Staff Dashboard
+                  </Link>
+                )}
                 <Link
                   href="/dashboard"
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
