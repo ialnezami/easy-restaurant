@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { OrderStatus } from '@/models/Order';
 import OrderCard from './OrderCard';
 import OrderStatusBadge from './OrderStatusBadge';
@@ -54,11 +54,7 @@ export default function OrderList({
     filterByStaffType || ''
   );
 
-  useEffect(() => {
-    fetchOrders();
-  }, [restaurantId, selectedStatus, selectedStaffType, staffView]);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     setLoading(true);
     setError('');
 
@@ -98,7 +94,11 @@ export default function OrderList({
     } finally {
       setLoading(false);
     }
-  };
+  }, [restaurantId, selectedStatus, selectedStaffType, staffView]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
 
   const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
     try {

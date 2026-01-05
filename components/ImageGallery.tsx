@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import ImageUpload from './ImageUpload';
 
 interface ImageGalleryProps {
@@ -47,10 +48,12 @@ export default function ImageGallery({
           {images.map((image, index) => (
             <div key={index} className="relative group">
               <div className="relative w-full h-32 rounded-lg overflow-hidden border border-gray-300">
-                <img
+                <Image
                   src={image}
                   alt={`Image ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 33vw"
                 />
                 <button
                   type="button"

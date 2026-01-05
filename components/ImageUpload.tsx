@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 
 interface ImageUploadProps {
   value?: string;
@@ -90,10 +91,12 @@ export default function ImageUpload({
       {preview ? (
         <div className="mt-2 relative">
           <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-300">
-            <img
+            <Image
               src={preview}
               alt="Preview"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <button
               type="button"
