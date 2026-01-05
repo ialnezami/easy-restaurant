@@ -81,7 +81,7 @@ export default function OrderCard({
               {t('order', 'staffType')}: {getStaffTypeLabel(lang, order.staffType)}
             </p>
           )}
-          {isAssigned && (
+          {isAssigned && order.assignedStaff && (
             <p className="text-sm text-gray-500 mt-1">
               {t('order', 'assignedStaff')}: {order.assignedStaff.name}
             </p>
