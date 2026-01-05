@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Error from './Error';
+import ImageUpload from './ImageUpload';
+import ImageGallery from './ImageGallery';
 
 interface RestaurantEditFormProps {
   restaurant: {
@@ -20,6 +22,8 @@ interface RestaurantEditFormProps {
       email?: string;
       website?: string;
     };
+    coverImage?: string;
+    images?: string[];
   };
 }
 
@@ -37,6 +41,8 @@ export default function RestaurantEditForm({
     phone: restaurant.contactInfo?.phone || '',
     email: restaurant.contactInfo?.email || '',
     website: restaurant.contactInfo?.website || '',
+    coverImage: restaurant.coverImage || '',
+    images: restaurant.images || [],
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -77,6 +83,8 @@ export default function RestaurantEditForm({
             email: formData.email,
             website: formData.website,
           },
+          coverImage: formData.coverImage || null,
+          images: formData.images,
         }),
       });
 
@@ -212,6 +220,38 @@ export default function RestaurantEditForm({
                   <option value="Other">Other</option>
                 </select>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t pt-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Images
+          </h3>
+          <div className="space-y-6">
+            <div>
+              <ImageUpload
+                value={formData.coverImage}
+                onChange={(url) =>
+                  setFormData({ ...formData, coverImage: url })
+                }
+                label="Cover Image / Logo (optional)"
+              />
+              {formData.coverImage && (
+                <p className="mt-1 text-sm text-gray-500">
+                  Current cover image will be replaced when you upload a new one.
+                </p>
+              )}
+            </div>
+            <div>
+              <ImageGallery
+                images={formData.images}
+                onChange={(images) =>
+                  setFormData({ ...formData, images })
+                }
+                label="Additional Images (optional)"
+                maxImages={10}
+              />
             </div>
           </div>
         </div>

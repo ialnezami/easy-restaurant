@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Error from '@/components/Error';
+import ImageUpload from '@/components/ImageUpload';
+import ImageGallery from '@/components/ImageGallery';
 
 export default function NewRestaurantPage() {
   const router = useRouter();
@@ -16,6 +18,8 @@ export default function NewRestaurantPage() {
     phone: '',
     email: '',
     website: '',
+    coverImage: '',
+    images: [] as string[],
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -56,6 +60,8 @@ export default function NewRestaurantPage() {
             email: formData.email,
             website: formData.website,
           },
+          coverImage: formData.coverImage || null,
+          images: formData.images,
         }),
       });
 
@@ -198,6 +204,39 @@ export default function NewRestaurantPage() {
                       <option value="Other">Other</option>
                     </select>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Images
+              </h3>
+              <div className="space-y-6">
+                <div>
+                  <ImageUpload
+                    value={formData.coverImage}
+                    onChange={(url) =>
+                      setFormData({ ...formData, coverImage: url })
+                    }
+                    label="Cover Image / Logo (optional)"
+                  />
+                  <p className="mt-1 text-sm text-gray-500">
+                    This will be used as the main logo or cover image for your restaurant.
+                  </p>
+                </div>
+                <div>
+                  <ImageGallery
+                    images={formData.images}
+                    onChange={(images) =>
+                      setFormData({ ...formData, images })
+                    }
+                    label="Additional Images (optional)"
+                    maxImages={10}
+                  />
+                  <p className="mt-1 text-sm text-gray-500">
+                    Add up to 10 additional images to showcase your restaurant.
+                  </p>
                 </div>
               </div>
             </div>

@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { name, addresses, contactInfo } = body;
+    const { name, addresses, contactInfo, coverImage, images } = body;
 
     if (!name) {
       return NextResponse.json(
@@ -78,6 +78,8 @@ export async function POST(request: Request) {
       managers: [],
       addresses: addresses || [],
       contactInfo: contactInfo || {},
+      coverImage: coverImage || null,
+      images: images || [],
     });
 
     return NextResponse.json(
@@ -88,6 +90,8 @@ export async function POST(request: Request) {
           name: restaurant.name,
           addresses: restaurant.addresses,
           contactInfo: restaurant.contactInfo,
+          coverImage: restaurant.coverImage,
+          images: restaurant.images,
         },
       },
       { status: 201 }

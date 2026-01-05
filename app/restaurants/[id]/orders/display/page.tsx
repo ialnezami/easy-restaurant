@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { OrderStatus } from '@/models/Order';
 import OrderCard from '@/components/OrderCard';
@@ -30,14 +30,7 @@ export default function KitchenDisplayPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filterStatus, setFilterStatus] = useState<OrderStatus | ''>('');
 
-  useEffect(() => {
-    fetchOrders();
-    // Auto-refresh every 3 seconds
-    const interval = setInterval(fetchOrders, 3000);
-    return () => clearInterval(interval);
-  }, [restaurantId, filterStatus]);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       let url = `/api/restaurants/${restaurantId}/orders`;
       if (filterStatus) {
@@ -57,7 +50,14 @@ export default function KitchenDisplayPage() {
     } catch (err) {
       console.error('Error fetching orders:', err);
     }
-  };
+  }, [restaurantId, filterStatus]);
+
+  useEffect(() => {
+    fetchOrders();
+    // Auto-refresh every 3 seconds
+    const interval = setInterval(fetchOrders, 3000);
+    return () => clearInterval(interval);
+  }, [fetchOrders]);
 
   // Group orders by status
   const ordersByStatus = {

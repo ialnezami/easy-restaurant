@@ -17,7 +17,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { name, addresses, contactInfo } = body;
+    const { name, addresses, contactInfo, coverImage, images } = body;
 
     if (!name) {
       return NextResponse.json(
@@ -43,6 +43,8 @@ export async function PUT(
     restaurant.name = name;
     restaurant.addresses = addresses || [];
     restaurant.contactInfo = contactInfo || {};
+    restaurant.coverImage = coverImage || null;
+    restaurant.images = images || [];
     await restaurant.save();
 
     return NextResponse.json(
@@ -53,6 +55,8 @@ export async function PUT(
           name: restaurant.name,
           addresses: restaurant.addresses,
           contactInfo: restaurant.contactInfo,
+          coverImage: restaurant.coverImage,
+          images: restaurant.images,
         },
       },
       { status: 200 }

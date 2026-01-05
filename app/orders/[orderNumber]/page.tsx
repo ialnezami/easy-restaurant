@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import OrderStatusBadge from '@/components/OrderStatusBadge';
 import { OrderStatus } from '@/models/Order';
@@ -35,14 +35,7 @@ export default function OrderTrackingPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchOrder();
-    // Poll for updates every 5 seconds
-    const interval = setInterval(fetchOrder, 5000);
-    return () => clearInterval(interval);
-  }, [orderNumber]);
-
-  const fetchOrder = async () => {
+  const fetchOrder = useCallback(async () => {
     try {
       const response = await fetch(`/api/orders/${orderNumber}`);
       const data = await response.json();
@@ -58,7 +51,14 @@ export default function OrderTrackingPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [orderNumber]);
+
+  useEffect(() => {
+    fetchOrder();
+    // Poll for updates every 5 seconds
+    const interval = setInterval(fetchOrder, 5000);
+    return () => clearInterval(interval);
+  }, [fetchOrder]);
 
   if (loading) return <Loading />;
   if (error) return <Error message={error} />;

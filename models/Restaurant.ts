@@ -18,6 +18,8 @@ export interface IRestaurant extends Document {
     email?: string;
     website?: string;
   };
+  coverImage?: string; // Main logo/cover image
+  images?: string[]; // Array of additional images
   createdAt: Date;
   updatedAt: Date;
 }
@@ -76,6 +78,13 @@ const RestaurantSchema: Schema = new Schema(
       website: {
         type: String,
       },
+    },
+    coverImage: {
+      type: String,
+    },
+    images: {
+      type: [String],
+      default: [],
     },
   },
   {

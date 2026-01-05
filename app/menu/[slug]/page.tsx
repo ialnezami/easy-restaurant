@@ -4,6 +4,7 @@ import Restaurant from '@/models/Restaurant';
 import { formatPrice } from '@/lib/utils';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 
 async function getMenuBySlug(slug: string) {
   await connectDB();
