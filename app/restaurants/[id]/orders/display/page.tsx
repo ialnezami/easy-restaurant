@@ -59,8 +59,8 @@ export default function KitchenDisplayPage() {
     return () => clearInterval(interval);
   }, [fetchOrders]);
 
-  // Group orders by status
-  const ordersByStatus = {
+  // Group orders by status (excluding COMPLETED)
+  const ordersByStatus: Record<OrderStatus.PENDING | OrderStatus.PREPARING | OrderStatus.READY, Order[]> = {
     [OrderStatus.PENDING]: orders.filter((o) => o.status === OrderStatus.PENDING),
     [OrderStatus.PREPARING]: orders.filter((o) => o.status === OrderStatus.PREPARING),
     [OrderStatus.READY]: orders.filter((o) => o.status === OrderStatus.READY),
@@ -104,9 +104,9 @@ export default function KitchenDisplayPage() {
 
         {/* Orders Grid - Large display */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filterStatus ? (
+          {filterStatus && filterStatus !== OrderStatus.COMPLETED ? (
             // Show filtered orders
-            ordersByStatus[filterStatus as OrderStatus]?.map((order) => (
+            ordersByStatus[filterStatus as OrderStatus.PENDING | OrderStatus.PREPARING | OrderStatus.READY]?.map((order) => (
               <OrderCard key={order._id} order={order} />
             ))
           ) : (
