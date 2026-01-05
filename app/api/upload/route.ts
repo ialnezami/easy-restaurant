@@ -39,13 +39,33 @@ export async function POST(request: Request) {
     const base64 = buffer.toString('base64');
     const dataURI = `data:${file.type};base64,${base64}`;
 
+    // Validate Cloudinary configuration
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
+
+    if (!cloudName) {
+      console.error('Missing NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME environment variable');
+      return NextResponse.json(
+        { error: 'Cloudinary cloud name is not configured' },
+        { status: 500 }
+      );
+    }
+
+    if (!uploadPreset) {
+      console.error('Missing CLOUDINARY_UPLOAD_PRESET environment variable');
+      return NextResponse.json(
+        { error: 'Cloudinary upload preset is not configured' },
+        { status: 500 }
+      );
+    }
+
     // Upload to Cloudinary using unsigned upload with preset
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
     // Cloudinary accepts base64 data URI in the file parameter
     const cloudinaryFormData = new URLSearchParams();
     cloudinaryFormData.append('file', dataURI);
-    cloudinaryFormData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET || 'menu_items');
+    cloudinaryFormData.append('upload_preset', uploadPreset);
     cloudinaryFormData.append('folder', 'menu-items'); // Organize uploads in folders
 
     const cloudinaryResponse = await fetch(cloudinaryUrl, {
@@ -57,10 +77,16 @@ export async function POST(request: Request) {
     });
 
     if (!cloudinaryResponse.ok) {
-      const errorData = await cloudinaryResponse.json();
-      console.error('Cloudinary error:', errorData);
+      let errorMessage = 'Failed to upload image to Cloudinary';
+      try {
+        const errorData = await cloudinaryResponse.json();
+        console.error('Cloudinary error:', errorData);
+        errorMessage = errorData.error?.message || errorData.message || errorMessage;
+      } catch (e) {
+        console.error('Failed to parse Cloudinary error response');
+      }
       return NextResponse.json(
-        { error: 'Failed to upload image to Cloudinary' },
+        { error: errorMessage },
         { status: 500 }
       );
     }
@@ -76,8 +102,20 @@ export async function POST(request: Request) {
     );
   } catch (error: any) {
     console.error('Upload error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ? 'Set' : 'Missing',
+      uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET ? 'Set' : 'Missing',
+    });
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { 
+        error: error.message || 'Internal server error',
+        details: process.env.NODE_ENV === 'development' ? {
+          cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ? 'Set' : 'Missing',
+          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET ? 'Set' : 'Missing',
+        } : undefined,
+      },
       { status: 500 }
     );
   }

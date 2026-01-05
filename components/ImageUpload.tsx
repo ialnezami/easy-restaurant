@@ -57,14 +57,21 @@ export default function ImageUpload({
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Upload failed');
+        const errorMsg = data.error || 'Upload failed';
+        console.error('Upload API error:', {
+          status: response.status,
+          error: errorMsg,
+          details: data.details,
+        });
+        throw new Error(errorMsg);
       }
 
       onChange(data.url);
       setPreview(data.url);
     } catch (error: any) {
       console.error('Upload error:', error);
-      alert(error.message || 'Failed to upload image');
+      const errorMessage = error.message || 'Failed to upload image';
+      alert(`Upload failed: ${errorMessage}\n\nPlease check:\n1. Cloudinary environment variables are set\n2. Upload preset is configured correctly\n3. File size is under 10MB`);
     } finally {
       setUploading(false);
       // Reset file input
