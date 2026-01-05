@@ -25,6 +25,8 @@ interface RestaurantEditFormProps {
     };
     coverImage?: string;
     images?: string[];
+    primaryColor?: string;
+    secondaryColor?: string;
   };
 }
 
