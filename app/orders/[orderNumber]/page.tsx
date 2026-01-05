@@ -6,7 +6,7 @@ import OrderStatusBadge from '@/components/OrderStatusBadge';
 import { OrderStatus } from '@/models/Order';
 import { useTranslations } from '@/lib/use-translations';
 import Loading from '@/components/Loading';
-import Error from '@/components/Error';
+import ErrorComponent from '@/components/Error';
 
 interface OrderItem {
   name: string;
@@ -61,8 +61,8 @@ export default function OrderTrackingPage() {
   }, [fetchOrder]);
 
   if (loading) return <Loading />;
-  if (error) return <Error message={error} />;
-  if (!order) return <Error message={t('order', 'orderNotFound')} />;
+  if (error) return <ErrorComponent message={error} />;
+  if (!order) return <ErrorComponent message={t('order', 'orderNotFound')} />;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
