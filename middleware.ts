@@ -6,9 +6,19 @@ export default withAuth(
   function middleware(req) {
     const token = req.nextauth.token;
 
-    // Admin routes
+    // Admin routes - only admins can access
     if (req.nextUrl.pathname.startsWith('/admin')) {
       if (token?.role !== UserRole.ADMIN) {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+      }
+    }
+
+    // Staff routes - managers and admins can access
+    if (req.nextUrl.pathname.startsWith('/staff')) {
+      if (
+        token?.role !== UserRole.MANAGER &&
+        token?.role !== UserRole.ADMIN
+      ) {
         return NextResponse.redirect(new URL('/dashboard', req.url));
       }
     }
