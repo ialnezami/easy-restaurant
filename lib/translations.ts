@@ -1,4 +1,4 @@
-import { supportedLanguages } from './i18n';
+import { supportedLanguages } from './i18n-constants';
 
 export type TranslationKey = 
   | 'common'

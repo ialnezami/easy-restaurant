@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supportedLanguages } from '@/lib/i18n';
+import { supportedLanguages } from '@/lib/i18n-constants';
 import { useRouter } from 'next/navigation';
 
 export default function LanguageSwitcher() {

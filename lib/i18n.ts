@@ -2,18 +2,8 @@ import { cookies } from 'next/headers';
 import connectDB from './mongodb';
 import Settings from '@/models/Settings';
 
-export const supportedLanguages = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'it', name: 'Italiano', flag: '🇮🇹' },
-  { code: 'pt', name: 'Português', flag: '🇵🇹' },
-  { code: 'ar', name: 'العربية', flag: '🇸🇦' },
-  { code: 'zh', name: '中文', flag: '🇨🇳' },
-  { code: 'ja', name: '日本語', flag: '🇯🇵' },
-  { code: 'ko', name: '한국어', flag: '🇰🇷' },
-];
+// Re-export supportedLanguages for server components that need it
+export { supportedLanguages } from './i18n-constants';
 
 export async function getLanguage(): Promise<string> {
   try {
