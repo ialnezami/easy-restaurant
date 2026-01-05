@@ -198,8 +198,13 @@ export default function MenuItemEditForm({
           <ImageUpload
             value={formData.image}
             onChange={(url) => setFormData({ ...formData, image: url })}
-            label="Image (optional)"
+            label="Cover Image (optional)"
           />
+          {formData.image && (
+            <p className="mt-1 text-sm text-gray-500">
+              Current cover image will be replaced when you upload a new one.
+            </p>
+          )}
         </div>
 
         <div className="flex justify-between pt-6 border-t">

@@ -166,8 +166,13 @@ export default function NewMenuItemPage() {
               <ImageUpload
                 value={formData.image}
                 onChange={(url) => setFormData({ ...formData, image: url })}
-                label="Image (optional)"
+                label="Cover Image (optional)"
               />
+              {formData.image && (
+                <p className="mt-1 text-sm text-gray-500">
+                  Cover image uploaded successfully. You can change it before submitting.
+                </p>
+              )}
             </div>
 
             <div className="flex justify-end space-x-4 pt-6 border-t">
