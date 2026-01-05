@@ -357,20 +357,6 @@ export default async function PublicMenuPage({
       <footer className="mt-16 py-8 text-center text-gray-600 text-sm">
         <p>Powered by Easy Restaurant</p>
       </footer>
-
-      {/* Add CSS for animations */}
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   );
 }
