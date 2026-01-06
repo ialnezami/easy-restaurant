@@ -4,11 +4,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Error from '@/components/Error';
+import PasswordInput from '@/components/PasswordInput';
+import { useToast } from '@/components/ToastContainer';
 import { useTranslations } from '@/lib/use-translations';
 
 export default function RegisterPage() {
   const router = useRouter();
   const { t } = useTranslations();
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -61,6 +64,7 @@ export default function RegisterPage() {
         return;
       }
 
+      showToast(t('auth', 'registrationSuccess') || 'Registration successful!', 'success');
       router.push('/auth/login?registered=true');
     } catch (err) {
       setError(t('common', 'unexpectedError'));
@@ -127,39 +131,33 @@ export default function RegisterPage() {
                 />
               </div>
               
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
-                  {t('auth', 'password')}
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 sm:text-sm"
-                  placeholder={`${t('auth', 'password')} (${t('auth', 'passwordMinLength')})`}
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </div>
+              <PasswordInput
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder={`${t('auth', 'password')} (${t('auth', 'passwordMinLength') || 'min 6 characters'})`}
+                required
+                autoComplete="new-password"
+                label={t('auth', 'password')}
+                showStrengthIndicator
+              />
               
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1.5">
-                  {t('common', 'confirmPassword')}
-                </label>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 sm:text-sm"
-                  placeholder={t('common', 'confirmPassword')}
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-              </div>
+              <PasswordInput
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder={t('common', 'confirmPassword')}
+                required
+                autoComplete="new-password"
+                label={t('common', 'confirmPassword')}
+              />
+              {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                <p className="text-sm text-red-600 mt-1">
+                  {t('auth', 'passwordsNotMatch') || 'Passwords do not match'}
+                </p>
+              )}
             </div>
 
             <div className="pt-2">

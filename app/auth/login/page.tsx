@@ -1,19 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Error from '@/components/Error';
+import PasswordInput from '@/components/PasswordInput';
+import { useToast } from '@/components/ToastContainer';
 import { useTranslations } from '@/lib/use-translations';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useTranslations();
+  const { showToast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const registered = searchParams?.get('registered');
+    if (registered === 'true') {
+      showToast(t('auth', 'registrationSuccess') || 'Registration successful! Please log in.', 'success');
+    }
+  }, [searchParams, showToast, t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,22 +103,16 @@ export default function LoginPage() {
                 />
               </div>
               
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
-                  {t('auth', 'password')}
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 sm:text-sm"
-                  placeholder={t('auth', 'password')}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
+              <PasswordInput
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder={t('auth', 'password')}
+                required
+                autoComplete="current-password"
+                label={t('auth', 'password')}
+              />
             </div>
 
             <div className="pt-2">

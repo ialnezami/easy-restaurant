@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import Restaurant from '@/models/Restaurant';
 import Link from 'next/link';
+import EmptyState from '@/components/EmptyState';
 import { getServerTranslations } from '@/lib/server-translations';
 
 async function getRestaurants(userId: string, userRole: string) {
@@ -51,16 +52,30 @@ export default async function DashboardPage() {
         </div>
 
         {restaurants.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg mb-4">
-              {t('dashboard', 'noRestaurants')}
-            </p>
-            <Link
-              href="/restaurants/new"
-              className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-blue-700"
-            >
-              {t('dashboard', 'createFirstRestaurant')}
-            </Link>
+          <div className="bg-white rounded-lg shadow">
+            <EmptyState
+              title={t('dashboard', 'noRestaurants')}
+              description={t('dashboard', 'noRestaurantsDescription') || 'Get started by creating your first restaurant to manage menus and orders.'}
+              action={{
+                label: t('dashboard', 'createFirstRestaurant'),
+                href: '/restaurants/new',
+              }}
+              icon={
+                <svg
+                  className="w-16 h-16 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+              }
+            />
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
