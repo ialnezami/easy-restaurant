@@ -63,7 +63,16 @@ export default function ImageUpload({
           error: errorMsg,
           details: data.details,
         });
-        throw new Error(errorMsg);
+        
+        // Provide more helpful error messages
+        let userMessage = errorMsg;
+        if (errorMsg.includes('Cloudinary cloud name is not configured')) {
+          userMessage = `Cloudinary is not configured.\n\nTo fix this:\n1. Set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME in your environment variables\n2. Set CLOUDINARY_UPLOAD_PRESET in your environment variables\n3. See CLOUDINARY_SETUP.md for detailed instructions\n\nFor Vercel: Add these in Project Settings → Environment Variables`;
+        } else if (errorMsg.includes('upload preset is not configured')) {
+          userMessage = `Cloudinary upload preset is not configured.\n\nTo fix this:\n1. Create an unsigned upload preset in Cloudinary dashboard\n2. Set CLOUDINARY_UPLOAD_PRESET to the preset name\n3. See CLOUDINARY_SETUP.md for detailed instructions`;
+        }
+        
+        throw new Error(userMessage);
       }
 
       onChange(data.url);
@@ -71,7 +80,7 @@ export default function ImageUpload({
     } catch (error: any) {
       console.error('Upload error:', error);
       const errorMessage = error.message || 'Failed to upload image';
-      alert(`Upload failed: ${errorMessage}\n\nPlease check:\n1. Cloudinary environment variables are set\n2. Upload preset is configured correctly\n3. File size is under 10MB`);
+      alert(`Upload failed: ${errorMessage}`);
     } finally {
       setUploading(false);
       // Reset file input

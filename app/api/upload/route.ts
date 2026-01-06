@@ -43,18 +43,34 @@ export async function POST(request: Request) {
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
     const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
 
-    if (!cloudName) {
+    if (!cloudName || cloudName.trim() === '') {
       console.error('Missing NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME environment variable');
       return NextResponse.json(
-        { error: 'Cloudinary cloud name is not configured' },
+        { 
+          error: 'Cloudinary cloud name is not configured',
+          details: {
+            message: 'Please set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME in your environment variables',
+            help: 'See CLOUDINARY_SETUP.md for setup instructions',
+            cloudName: 'Missing',
+            uploadPreset: uploadPreset ? 'Set' : 'Missing',
+          }
+        },
         { status: 500 }
       );
     }
 
-    if (!uploadPreset) {
+    if (!uploadPreset || uploadPreset.trim() === '') {
       console.error('Missing CLOUDINARY_UPLOAD_PRESET environment variable');
       return NextResponse.json(
-        { error: 'Cloudinary upload preset is not configured' },
+        { 
+          error: 'Cloudinary upload preset is not configured',
+          details: {
+            message: 'Please set CLOUDINARY_UPLOAD_PRESET in your environment variables',
+            help: 'See CLOUDINARY_SETUP.md for setup instructions',
+            cloudName: 'Set',
+            uploadPreset: 'Missing',
+          }
+        },
         { status: 500 }
       );
     }

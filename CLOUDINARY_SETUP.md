@@ -22,6 +22,8 @@ This guide will help you set up Cloudinary for image uploads in Easy Restaurant.
 
 ## Step 3: Add Environment Variables
 
+### For Local Development
+
 Add the following to your `.env.local` file:
 
 ```env
@@ -33,6 +35,30 @@ Replace:
 - `your-cloud-name-here` with your actual Cloudinary cloud name (found on dashboard)
 - `menu_items` with your upload preset name if you used a different name
 
+### For Vercel Deployment
+
+1. Go to your Vercel project dashboard
+2. Navigate to **Settings** → **Environment Variables**
+3. Add the following environment variables:
+
+   - **Name**: `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
+     - **Value**: Your Cloudinary cloud name (e.g., `dxyz123abc`)
+     - **Environment**: Production, Preview, Development (select all)
+
+   - **Name**: `CLOUDINARY_UPLOAD_PRESET`
+     - **Value**: Your upload preset name (e.g., `menu_items`)
+     - **Environment**: Production, Preview, Development (select all)
+
+4. **Important**: After adding environment variables, you must redeploy your application:
+   - Go to **Deployments** tab
+   - Click the **⋯** (three dots) on the latest deployment
+   - Select **Redeploy**
+   - Or push a new commit to trigger a new deployment
+
+5. Verify the variables are set:
+   - Check that both variables appear in the Environment Variables list
+   - Make sure `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` starts with `NEXT_PUBLIC_` (required for client-side access)
+
 ## Step 4: Verify Setup
 
 1. Start your development server: `npm run dev`
@@ -42,14 +68,40 @@ Replace:
 
 ## Troubleshooting
 
+### Upload fails with "Cloudinary cloud name is not configured"
+**For Local Development:**
+- Check that `.env.local` file exists in the root directory
+- Verify `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` is set correctly
+- Restart your development server after adding environment variables
+- Make sure there are no spaces or quotes around the values
+
+**For Vercel:**
+- Go to **Settings** → **Environment Variables** in Vercel dashboard
+- Verify `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` is added
+- Make sure it's enabled for the correct environments (Production/Preview/Development)
+- **Redeploy your application** after adding environment variables (this is required!)
+- Check that the variable name starts with `NEXT_PUBLIC_` (required for client-side access)
+
+### Upload fails with "Cloudinary upload preset is not configured"
+**For Local Development:**
+- Check that `CLOUDINARY_UPLOAD_PRESET` is set in `.env.local`
+- Restart your development server
+
+**For Vercel:**
+- Verify `CLOUDINARY_UPLOAD_PRESET` is added in Environment Variables
+- Make sure the preset name matches exactly (case-sensitive)
+- Redeploy after adding the variable
+
 ### Upload fails with "Invalid upload preset"
-- Make sure the preset name in `.env.local` matches exactly
-- Ensure the preset is set to **Unsigned** mode
+- Make sure the preset name matches exactly (case-sensitive)
+- Ensure the preset is set to **Unsigned** mode in Cloudinary dashboard
 - Check that the preset is active in Cloudinary dashboard
+- Verify the preset name in environment variables matches the Cloudinary preset name
 
 ### Upload fails with "Invalid cloud name"
 - Verify your cloud name is correct (no spaces or special characters)
 - Make sure `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` starts with `NEXT_PUBLIC_` (required for client-side access)
+- Check that the cloud name matches exactly what's shown in Cloudinary dashboard
 
 ### Images not displaying
 - Check that the URL returned from Cloudinary is accessible
