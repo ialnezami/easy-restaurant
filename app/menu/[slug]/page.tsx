@@ -131,13 +131,6 @@ export default async function PublicMenuPage({
                   {menu.name}
                 </p>
               )}
-              
-              {/* Restaurant Info */}
-              {menu.restaurant.contactInfo?.phone && (
-                <p className="mt-4 text-white/80 text-sm">
-                  📞 {menu.restaurant.contactInfo.phone}
-                </p>
-              )}
             </div>
             
             <Link
