@@ -19,6 +19,7 @@ export interface IMenu extends Document {
   restaurant: mongoose.Types.ObjectId;
   name?: string;
   slug: string;
+  token: string; // Unique token for public access
   items: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
@@ -92,6 +93,12 @@ const MenuSchema: Schema = new Schema(
       lowercase: true,
       trim: true,
     },
+    token: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     items: [
       {
         type: Schema.Types.ObjectId,
@@ -104,8 +111,9 @@ const MenuSchema: Schema = new Schema(
   }
 );
 
-// Create index for restaurant (slug already has unique index)
+// Create indexes
 MenuSchema.index({ restaurant: 1 });
+MenuSchema.index({ token: 1 }); // Index for token lookups
 
 const MenuItem: Model<IMenuItem> =
   mongoose.models.MenuItem ||

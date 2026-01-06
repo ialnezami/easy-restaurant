@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import Menu from '@/models/Menu';
 import Restaurant from '@/models/Restaurant';
+import { generateMenuToken } from '@/lib/utils';
+import crypto from 'crypto';
 
 export async function POST(request: Request) {
   try {
@@ -47,10 +49,22 @@ export async function POST(request: Request) {
       );
     }
 
+    // Generate unique token
+    let token: string;
+    let tokenExists = true;
+    while (tokenExists) {
+      token = crypto.randomBytes(16).toString('hex');
+      const existingToken = await Menu.findOne({ token });
+      if (!existingToken) {
+        tokenExists = false;
+      }
+    }
+
     const menu = await Menu.create({
       restaurant: restaurantId,
       name: name || null,
       slug,
+      token: token!,
       items: [],
     });
 
@@ -61,6 +75,7 @@ export async function POST(request: Request) {
           _id: menu._id,
           name: menu.name,
           slug: menu.slug,
+          token: menu.token,
           restaurant: menu.restaurant,
         },
       },

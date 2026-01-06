@@ -8,9 +8,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
-async function getMenuBySlug(slug: string) {
+async function getMenuByToken(token: string) {
   await connectDB();
-  const menu = await Menu.findOne({ slug })
+  const menu = await Menu.findOne({ token })
     .populate('restaurant')
     .populate('items');
 
@@ -24,7 +24,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const menu = await getMenuBySlug(params.slug);
+  const menu = await getMenuByToken(params.slug);
 
   if (!menu) {
     return {
@@ -41,11 +41,14 @@ export async function generateMetadata({
 
 export default async function PublicMenuPage({
   params,
+  searchParams,
 }: {
   params: { slug: string };
+  searchParams: { table?: string };
 }) {
-  const menu = await getMenuBySlug(params.slug);
+  const menu = await getMenuByToken(params.slug);
   const currentLang = await getLanguage();
+  const tableNumber = searchParams.table || null;
 
   if (!menu) {
     return (
@@ -138,7 +141,7 @@ export default async function PublicMenuPage({
             </div>
             
             <Link
-              href={`/menu/${params.slug}/order`}
+              href={`/menu/${params.slug}/order${tableNumber ? `?table=${tableNumber}` : ''}`}
               className="group relative px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
               style={{
                 color: primaryColor,

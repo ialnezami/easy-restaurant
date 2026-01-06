@@ -24,6 +24,7 @@ interface OrderFormProps {
   restaurantId: string;
   items: MenuItem[];
   onSuccess?: (orderNumber: string) => void;
+  defaultTableNumber?: string;
 }
 
 export default function OrderForm({
@@ -31,13 +32,14 @@ export default function OrderForm({
   restaurantId,
   items,
   onSuccess,
+  defaultTableNumber,
 }: OrderFormProps) {
   const router = useRouter();
   const { t, lang } = useTranslations();
   const [formData, setFormData] = useState({
     customerName: '',
     customerPhone: '',
-    tableNumber: '',
+    tableNumber: defaultTableNumber || '',
     notes: '',
   });
   const [orderItems, setOrderItems] = useState<

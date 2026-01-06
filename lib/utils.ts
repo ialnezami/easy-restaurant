@@ -22,6 +22,27 @@ export function formatPrice(price: number): string {
 }
 
 /**
+ * Generate a unique token for menu public access
+ */
+export function generateMenuToken(): string {
+  // Generate a random token using crypto
+  const array = new Uint8Array(16);
+  if (typeof window !== 'undefined') {
+    // Browser
+    crypto.getRandomValues(array);
+  } else {
+    // Node.js
+    const crypto = require('crypto');
+    crypto.randomFillSync(array);
+  }
+  
+  // Convert to hex string
+  return Array.from(array)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/**
  * Get translated menu item field, falling back to default if translation doesn't exist
  */
 export function getTranslatedMenuItemField(

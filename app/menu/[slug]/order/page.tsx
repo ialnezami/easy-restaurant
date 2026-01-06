@@ -4,9 +4,9 @@ import Restaurant from '@/models/Restaurant';
 import OrderForm from '@/components/OrderForm';
 import Link from 'next/link';
 
-async function getMenuBySlug(slug: string) {
+async function getMenuByToken(token: string) {
   await connectDB();
-  const menu = await Menu.findOne({ slug })
+  const menu = await Menu.findOne({ token })
     .populate('restaurant')
     .populate('items');
 
@@ -17,10 +17,13 @@ async function getMenuBySlug(slug: string) {
 
 export default async function OrderPage({
   params,
+  searchParams,
 }: {
   params: { slug: string };
+  searchParams: { table?: string };
 }) {
-  const menu = await getMenuBySlug(params.slug);
+  const menu = await getMenuByToken(params.slug);
+  const tableNumber = searchParams.table || null;
 
   if (!menu) {
     return (
@@ -60,6 +63,7 @@ export default async function OrderPage({
             menuId={menu._id}
             restaurantId={menu.restaurant._id}
             items={menu.items || []}
+            defaultTableNumber={tableNumber || undefined}
           />
         </div>
       </div>
