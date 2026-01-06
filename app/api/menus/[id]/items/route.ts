@@ -17,7 +17,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { name, description, price, category, image } = body;
+    const { name, description, price, category, image, translations } = body;
 
     if (!name || price === undefined) {
       return NextResponse.json(
@@ -39,14 +39,35 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
+    // Prepare translations as Maps (MongoDB schema expects Map)
+    const translationsMap: any = {};
+    if (translations) {
+      if (translations.name) {
+        translationsMap.name = new Map(Object.entries(translations.name));
+      }
+      if (translations.description) {
+        translationsMap.description = new Map(Object.entries(translations.description));
+      }
+      if (translations.category) {
+        translationsMap.category = new Map(Object.entries(translations.category));
+      }
+    }
+
     // Create menu item
-    const menuItem = await MenuItem.create({
+    const menuItemData: any = {
       name,
       description: description || null,
       price: parseFloat(price),
       category: category || null,
       image: image || null,
-    });
+    };
+
+    // Add translations if provided
+    if (Object.keys(translationsMap).length > 0) {
+      menuItemData.translations = translationsMap;
+    }
+
+    const menuItem = await MenuItem.create(menuItemData);
 
     // Add item to menu
     menu.items.push(menuItem._id);

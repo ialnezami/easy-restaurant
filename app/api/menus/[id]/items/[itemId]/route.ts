@@ -17,7 +17,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { name, description, price, category, image } = body;
+    const { name, description, price, category, image, translations } = body;
 
     if (!name || price === undefined) {
       return NextResponse.json(
@@ -50,16 +50,37 @@ export async function PUT(
       );
     }
 
+    // Prepare translations as Maps (MongoDB schema expects Map)
+    const translationsMap: any = {};
+    if (translations) {
+      if (translations.name) {
+        translationsMap.name = new Map(Object.entries(translations.name));
+      }
+      if (translations.description) {
+        translationsMap.description = new Map(Object.entries(translations.description));
+      }
+      if (translations.category) {
+        translationsMap.category = new Map(Object.entries(translations.category));
+      }
+    }
+
     // Update menu item
+    const updateData: any = {
+      name,
+      description: description || null,
+      price: parseFloat(price),
+      category: category || null,
+      image: image || null,
+    };
+
+    // Add translations if provided
+    if (Object.keys(translationsMap).length > 0) {
+      updateData.translations = translationsMap;
+    }
+
     const menuItem = await MenuItem.findByIdAndUpdate(
       params.itemId,
-      {
-        name,
-        description: description || null,
-        price: parseFloat(price),
-        category: category || null,
-        image: image || null,
-      },
+      updateData,
       { new: true, runValidators: true }
     );
 

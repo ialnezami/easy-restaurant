@@ -11,6 +11,10 @@ export default function QRCodeDisplay({ url }: QRCodeDisplayProps) {
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('');
 
   useEffect(() => {
+    if (!url || url.includes('undefined')) {
+      return;
+    }
+
     const generateQR = async () => {
       try {
         const dataUrl = await QRCode.toDataURL(url, {

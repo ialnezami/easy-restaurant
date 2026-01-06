@@ -59,7 +59,26 @@ export default async function MenuManagementPage({
     );
   }
 
-  const menuUrl = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/menu/${menu.token}`;
+  // Ensure menu has a token - generate one if missing
+  let menuToken = menu.token;
+  if (!menuToken) {
+    await connectDB(); // Ensure DB connection is active
+    const crypto = require('crypto');
+    let tokenExists = true;
+    while (tokenExists) {
+      menuToken = crypto.randomBytes(16).toString('hex');
+      const existingMenu = await Menu.findOne({ token: menuToken });
+      if (!existingMenu) {
+        tokenExists = false;
+      }
+    }
+    // Update the menu with the new token
+    await Menu.findByIdAndUpdate(params.id, { token: menuToken });
+    // Update the local menu object for display
+    menu.token = menuToken;
+  }
+
+  const menuUrl = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/menu/${menuToken}`;
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
