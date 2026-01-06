@@ -38,6 +38,12 @@ export default function LanguageSwitcher() {
     document.cookie = `lang=${langCode}; path=/; max-age=31536000`; // 1 year
     setCurrentLang(langCode);
     setIsOpen(false);
+    
+    // Update direction for RTL languages
+    const isRTL = langCode === 'ar';
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    document.documentElement.lang = langCode;
+    
     router.refresh();
   };
 
