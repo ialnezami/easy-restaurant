@@ -152,7 +152,7 @@ export default function OrderForm({
             onChange={(e) =>
               setFormData({ ...formData, customerName: e.target.value })
             }
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white text-gray-900"
           />
         </div>
         <div>
@@ -165,7 +165,7 @@ export default function OrderForm({
             onChange={(e) =>
               setFormData({ ...formData, customerPhone: e.target.value })
             }
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white text-gray-900"
           />
         </div>
         <div>
@@ -178,7 +178,7 @@ export default function OrderForm({
             onChange={(e) =>
               setFormData({ ...formData, tableNumber: e.target.value })
             }
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white text-gray-900"
           />
         </div>
       </div>
@@ -267,7 +267,7 @@ export default function OrderForm({
           value={formData.notes}
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
           rows={3}
-          className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white text-gray-900"
         />
       </div>
 

@@ -154,7 +154,7 @@ export default function OrderList({
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value as OrderStatus | '')}
-            className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white text-gray-900"
           >
             <option value="">{t('common', 'all')}</option>
             {Object.values(OrderStatus).map((status) => {
@@ -176,7 +176,7 @@ export default function OrderList({
             <select
               value={selectedStaffType}
               onChange={(e) => setSelectedStaffType(e.target.value)}
-              className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white text-gray-900"
             >
               <option value="">{t('common', 'all') || 'All'}</option>
               {staffTypes.map((type) => (

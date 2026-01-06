@@ -51,7 +51,7 @@ export default function TrackOrderPage() {
               value={orderNumber}
               onChange={(e) => setOrderNumber(e.target.value)}
               placeholder="e.g., 20240101-001"
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-lg"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-lg bg-white text-gray-900"
               required
             />
           </div>

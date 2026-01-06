@@ -91,7 +91,7 @@ export default function UserEditForm({ user }: UserEditFormProps) {
             required
             value={formData.name}
             onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-gray-900"
           />
         </div>
 
@@ -109,7 +109,7 @@ export default function UserEditForm({ user }: UserEditFormProps) {
             required
             value={formData.email}
             onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-gray-900"
           />
         </div>
 
@@ -126,7 +126,7 @@ export default function UserEditForm({ user }: UserEditFormProps) {
             required
             value={formData.role}
             onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-gray-900"
           >
             <option value={UserRole.OWNER}>Owner</option>
             <option value={UserRole.MANAGER}>Manager</option>

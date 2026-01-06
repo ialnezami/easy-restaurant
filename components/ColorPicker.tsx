@@ -94,7 +94,7 @@ export default function ColorPicker({
                       }
                     }}
                     placeholder="#000000"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                   />
                 </div>
               </div>
@@ -125,7 +125,7 @@ export default function ColorPicker({
                 onChange(color || defaultColor);
               }
             }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
             placeholder="#000000"
           />
           <p className="mt-1 text-xs text-gray-500">
