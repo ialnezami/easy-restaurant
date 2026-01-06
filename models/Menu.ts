@@ -7,6 +7,12 @@ export interface IMenuItem extends Document {
   category?: string;
   image?: string;
   order: number;
+  // Translations: object with language codes as keys
+  translations?: {
+    name?: { [lang: string]: string };
+    description?: { [lang: string]: string };
+    category?: { [lang: string]: string };
+  };
 }
 
 export interface IMenu extends Document {
@@ -44,6 +50,23 @@ const MenuItemSchema: Schema = new Schema(
     order: {
       type: Number,
       default: 0,
+    },
+    translations: {
+      name: {
+        type: Map,
+        of: String,
+        default: {},
+      },
+      description: {
+        type: Map,
+        of: String,
+        default: {},
+      },
+      category: {
+        type: Map,
+        of: String,
+        default: {},
+      },
     },
   },
   {

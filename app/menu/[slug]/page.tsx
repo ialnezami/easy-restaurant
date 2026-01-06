@@ -1,10 +1,12 @@
 import connectDB from '@/lib/mongodb';
 import Menu, { MenuItem } from '@/models/Menu';
 import Restaurant from '@/models/Restaurant';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, getTranslatedMenuItemField } from '@/lib/utils';
+import { getLanguage } from '@/lib/i18n';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 async function getMenuBySlug(slug: string) {
   await connectDB();
@@ -43,6 +45,7 @@ export default async function PublicMenuPage({
   params: { slug: string };
 }) {
   const menu = await getMenuBySlug(params.slug);
+  const currentLang = await getLanguage();
 
   if (!menu) {
     return (
@@ -80,6 +83,11 @@ export default async function PublicMenuPage({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Language Switcher */}
+      <div className="fixed top-4 right-4 z-50">
+        <LanguageSwitcher />
+      </div>
+
       {/* Header with Hero Section */}
       <div
         className="relative overflow-hidden"
@@ -200,7 +208,9 @@ export default async function PublicMenuPage({
                   }}
                 >
                   <h2 className="text-3xl font-bold" style={{ color: primaryColor }}>
-                    {category}
+                    {items.length > 0 
+                      ? getTranslatedMenuItemField(items[0], 'category', currentLang)
+                      : category}
                   </h2>
                   <p className="text-gray-600 text-sm mt-1">
                     {items.length} {items.length === 1 ? 'item' : 'items'}
@@ -241,7 +251,7 @@ export default async function PublicMenuPage({
                         <div className="p-5">
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="text-xl font-bold text-gray-900 group-hover:text-gray-800 transition-colors">
-                              {item.name}
+                              {getTranslatedMenuItemField(item, 'name', currentLang)}
                             </h3>
                             <span
                               className="text-xl font-bold ml-4 whitespace-nowrap"
@@ -251,14 +261,14 @@ export default async function PublicMenuPage({
                             </span>
                           </div>
                           
-                          {item.description && (
+                          {getTranslatedMenuItemField(item, 'description', currentLang) && (
                             <p className="text-gray-600 text-sm mt-2 line-clamp-2">
-                              {item.description}
+                              {getTranslatedMenuItemField(item, 'description', currentLang)}
                             </p>
                           )}
 
                           {/* Category Badge */}
-                          {item.category && (
+                          {getTranslatedMenuItemField(item, 'category', currentLang) && (
                             <span
                               className="inline-block mt-3 px-3 py-1 rounded-full text-xs font-medium"
                               style={{
@@ -266,7 +276,7 @@ export default async function PublicMenuPage({
                                 color: primaryColor,
                               }}
                             >
-                              {item.category}
+                              {getTranslatedMenuItemField(item, 'category', currentLang)}
                             </span>
                           )}
                         </div>
@@ -324,7 +334,7 @@ export default async function PublicMenuPage({
                         <div className="p-5">
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="text-xl font-bold text-gray-900">
-                              {item.name}
+                              {getTranslatedMenuItemField(item, 'name', currentLang)}
                             </h3>
                             <span
                               className="text-xl font-bold ml-4"
@@ -333,9 +343,9 @@ export default async function PublicMenuPage({
                               {formatPrice(item.price)}
                             </span>
                           </div>
-                          {item.description && (
+                          {getTranslatedMenuItemField(item, 'description', currentLang) && (
                             <p className="text-gray-600 text-sm mt-2">
-                              {item.description}
+                              {getTranslatedMenuItemField(item, 'description', currentLang)}
                             </p>
                           )}
                         </div>

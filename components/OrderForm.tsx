@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from '@/lib/use-translations';
+import { getTranslatedMenuItemField } from '@/lib/utils';
 import Error from './Error';
 
 interface MenuItem {
@@ -10,6 +11,12 @@ interface MenuItem {
   name: string;
   price: number;
   description?: string;
+  category?: string;
+  translations?: {
+    name?: { [lang: string]: string } | Map<string, string>;
+    description?: { [lang: string]: string } | Map<string, string>;
+    category?: { [lang: string]: string } | Map<string, string>;
+  };
 }
 
 interface OrderFormProps {
@@ -26,7 +33,7 @@ export default function OrderForm({
   onSuccess,
 }: OrderFormProps) {
   const router = useRouter();
-  const { t } = useTranslations();
+  const { t, lang } = useTranslations();
   const [formData, setFormData] = useState({
     customerName: '',
     customerPhone: '',
@@ -188,9 +195,13 @@ export default function OrderForm({
                 className="flex items-center justify-between p-4 border rounded-lg"
               >
                 <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">{item.name}</h4>
-                  {item.description && (
-                    <p className="text-sm text-gray-500">{item.description}</p>
+                  <h4 className="font-medium text-gray-900">
+                    {getTranslatedMenuItemField(item, 'name', lang)}
+                  </h4>
+                  {getTranslatedMenuItemField(item, 'description', lang) && (
+                    <p className="text-sm text-gray-500">
+                      {getTranslatedMenuItemField(item, 'description', lang)}
+                    </p>
                   )}
                   <p className="text-sm font-medium text-gray-700 mt-1">
                     ${item.price.toFixed(2)}
