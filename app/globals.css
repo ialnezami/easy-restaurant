@@ -92,4 +92,21 @@ body {
   animation: fadeInUp 0.6s ease-out both;
 }
 
+/* Focus visible for better accessibility */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better text selection */
+::selection {
+  background-color: #3b82f6;
+  color: white;
+}
+
 
