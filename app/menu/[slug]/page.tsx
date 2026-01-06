@@ -215,50 +215,69 @@ export default async function PublicMenuPage({
 
                 {/* Menu Items Grid */}
                 <div className="p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {items.map((item: any, itemIndex: number) => (
                       <div
                         key={item._id}
-                        className="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl border-2 border-gray-200 overflow-hidden hover:border-transparent transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl"
+                        className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
                         style={{
                           animation: `fadeInUp 0.5s ease-out ${(categoryIndex * 0.1) + (itemIndex * 0.05)}s both`,
                         }}
                       >
-                        {/* Item Image */}
-                        {item.image && (
-                          <div className="relative w-full h-48 overflow-hidden">
-                            <Image
-                              src={item.image}
-                              alt={item.name}
-                              fill
-                              className="object-cover group-hover:scale-110 transition-transform duration-500"
-                              unoptimized={item.image.startsWith('http')}
-                            />
-                            <div
-                              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                              style={{
-                                background: `linear-gradient(to bottom, transparent 0%, ${primaryColor}80 100%)`,
-                              }}
-                            />
-                          </div>
-                        )}
-
-                        {/* Item Content */}
-                        <div className="p-5">
-                          <div className="flex justify-between items-start mb-2">
-                            <h3 className="text-xl font-bold text-gray-900 group-hover:text-gray-800 transition-colors">
-                              {getTranslatedMenuItemField(item, 'name', currentLang)}
-                            </h3>
-                            <span
-                              className="text-xl font-bold ml-4 whitespace-nowrap"
-                              style={{ color: primaryColor }}
-                            >
+                        {/* Item Image - Larger and more prominent */}
+                        <div className="relative w-full h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+                          {item.image ? (
+                            <>
+                              <Image
+                                src={item.image}
+                                alt={getTranslatedMenuItemField(item, 'name', currentLang)}
+                                fill
+                                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                                unoptimized={item.image.startsWith('http')}
+                                priority={itemIndex < 6}
+                              />
+                              {/* Subtle overlay on hover */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            </>
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <svg
+                                className="w-20 h-20 text-gray-300"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={1.5}
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                          {/* Price Badge on Image */}
+                          <div
+                            className="absolute top-4 right-4 px-4 py-2 rounded-full shadow-lg backdrop-blur-sm"
+                            style={{
+                              backgroundColor: `${primaryColor}95`,
+                              color: 'white',
+                            }}
+                          >
+                            <span className="text-lg font-bold">
                               {formatPrice(item.price)}
                             </span>
                           </div>
+                        </div>
+
+                        {/* Item Content */}
+                        <div className="p-6">
+                          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors line-clamp-1">
+                            {getTranslatedMenuItemField(item, 'name', currentLang)}
+                          </h3>
                           
                           {getTranslatedMenuItemField(item, 'description', currentLang) && (
-                            <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+                            <p className="text-gray-600 text-sm mb-4 line-clamp-2 min-h-[2.5rem]">
                               {getTranslatedMenuItemField(item, 'description', currentLang)}
                             </p>
                           )}
@@ -266,9 +285,9 @@ export default async function PublicMenuPage({
                           {/* Category Badge */}
                           {getTranslatedMenuItemField(item, 'category', currentLang) && (
                             <span
-                              className="inline-block mt-3 px-3 py-1 rounded-full text-xs font-medium"
+                              className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold"
                               style={{
-                                backgroundColor: `${primaryColor}20`,
+                                backgroundColor: `${primaryColor}15`,
                                 color: primaryColor,
                               }}
                             >
@@ -279,7 +298,7 @@ export default async function PublicMenuPage({
 
                         {/* Hover Effect Border */}
                         <div
-                          className="absolute inset-0 border-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                          className="absolute inset-0 border-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                           style={{ borderColor: primaryColor }}
                         />
                       </div>
@@ -304,49 +323,86 @@ export default async function PublicMenuPage({
                   </h2>
                 </div>
                 <div className="p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {uncategorized.map((item: any) => (
                       <div
                         key={item._id}
-                        className="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl border-2 border-gray-200 overflow-hidden hover:border-transparent transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl"
+                        className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
                       >
-                        {item.image && (
-                          <div className="relative w-full h-48 overflow-hidden">
-                            <Image
-                              src={item.image}
-                              alt={item.name}
-                              fill
-                              className="object-cover group-hover:scale-110 transition-transform duration-500"
-                              unoptimized={item.image.startsWith('http')}
-                            />
-                            <div
-                              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                              style={{
-                                background: `linear-gradient(to bottom, transparent 0%, ${primaryColor}80 100%)`,
-                              }}
-                            />
-                          </div>
-                        )}
-                        <div className="p-5">
-                          <div className="flex justify-between items-start mb-2">
-                            <h3 className="text-xl font-bold text-gray-900">
-                              {getTranslatedMenuItemField(item, 'name', currentLang)}
-                            </h3>
-                            <span
-                              className="text-xl font-bold ml-4"
-                              style={{ color: primaryColor }}
-                            >
+                        {/* Item Image - Larger and more prominent */}
+                        <div className="relative w-full h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+                          {item.image ? (
+                            <>
+                              <Image
+                                src={item.image}
+                                alt={getTranslatedMenuItemField(item, 'name', currentLang)}
+                                fill
+                                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                                unoptimized={item.image.startsWith('http')}
+                              />
+                              {/* Subtle overlay on hover */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            </>
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <svg
+                                className="w-20 h-20 text-gray-300"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={1.5}
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                          {/* Price Badge on Image */}
+                          <div
+                            className="absolute top-4 right-4 px-4 py-2 rounded-full shadow-lg backdrop-blur-sm"
+                            style={{
+                              backgroundColor: `${primaryColor}95`,
+                              color: 'white',
+                            }}
+                          >
+                            <span className="text-lg font-bold">
                               {formatPrice(item.price)}
                             </span>
                           </div>
+                        </div>
+
+                        {/* Item Content */}
+                        <div className="p-6">
+                          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors line-clamp-1">
+                            {getTranslatedMenuItemField(item, 'name', currentLang)}
+                          </h3>
+                          
                           {getTranslatedMenuItemField(item, 'description', currentLang) && (
-                            <p className="text-gray-600 text-sm mt-2">
+                            <p className="text-gray-600 text-sm mb-4 line-clamp-2 min-h-[2.5rem]">
                               {getTranslatedMenuItemField(item, 'description', currentLang)}
                             </p>
                           )}
+
+                          {/* Category Badge */}
+                          {getTranslatedMenuItemField(item, 'category', currentLang) && (
+                            <span
+                              className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold"
+                              style={{
+                                backgroundColor: `${primaryColor}15`,
+                                color: primaryColor,
+                              }}
+                            >
+                              {getTranslatedMenuItemField(item, 'category', currentLang)}
+                            </span>
+                          )}
                         </div>
+
+                        {/* Hover Effect Border */}
                         <div
-                          className="absolute inset-0 border-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                          className="absolute inset-0 border-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                           style={{ borderColor: primaryColor }}
                         />
                       </div>
