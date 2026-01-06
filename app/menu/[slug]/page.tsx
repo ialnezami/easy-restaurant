@@ -24,6 +24,12 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
+  if (!params.slug) {
+    return {
+      title: 'Invalid Menu Link',
+    };
+  }
+
   const menu = await getMenuByToken(params.slug);
 
   if (!menu) {
@@ -46,8 +52,39 @@ export default async function PublicMenuPage({
   params: { slug: string };
   searchParams: { table?: string };
 }) {
+  // Validate slug parameter
+  if (!params.slug) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Invalid Menu Link
+          </h1>
+          <p className="text-gray-600">
+            The menu link is invalid or incomplete.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const menu = await getMenuByToken(params.slug);
   
+  if (!menu) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Menu Not Found
+          </h1>
+          <p className="text-gray-600">
+            The menu you&apos;re looking for doesn&apos;t exist or has been removed.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Get language: check cookie first, then restaurant default, then system default
   const cookieStore = await (await import('next/headers')).cookies();
   const langCookie = cookieStore.get('lang');
@@ -64,21 +101,6 @@ export default async function PublicMenuPage({
   }
   
   const tableNumber = searchParams.table || null;
-
-  if (!menu) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Menu Not Found
-          </h1>
-          <p className="text-gray-600">
-            The menu you&apos;re looking for doesn&apos;t exist or has been removed.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   // Get restaurant colors with defaults
   const primaryColor = menu.restaurant.primaryColor || '#3B82F6';

@@ -22,6 +22,25 @@ export default async function OrderPage({
   params: { slug: string };
   searchParams: { table?: string };
 }) {
+  // Validate slug parameter
+  if (!params.slug) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Invalid Menu Link
+          </h1>
+          <p className="text-gray-600 mb-4">
+            The menu link is invalid or incomplete.
+          </p>
+          <Link href="/" className="text-blue-600 hover:text-blue-700">
+            Go Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   const menu = await getMenuByToken(params.slug);
   const tableNumber = searchParams.table || null;
 
@@ -32,6 +51,9 @@ export default async function OrderPage({
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
             Menu Not Found
           </h1>
+          <p className="text-gray-600 mb-4">
+            The menu you&apos;re looking for doesn&apos;t exist or has been removed.
+          </p>
           <Link href="/" className="text-blue-600 hover:text-blue-700">
             Go Home
           </Link>

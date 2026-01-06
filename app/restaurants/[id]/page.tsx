@@ -6,6 +6,7 @@ import Restaurant from '@/models/Restaurant';
 import Menu from '@/models/Menu';
 import Link from 'next/link';
 import DeleteRestaurantButton from '@/components/DeleteRestaurantButton';
+import { getServerTranslations } from '@/lib/server-translations';
 
 async function getRestaurant(id: string, userId: string, userRole: string) {
   await connectDB();
@@ -45,6 +46,7 @@ export default async function RestaurantDetailPage({
     session.user.id,
     session.user.role
   );
+  const { t } = await getServerTranslations();
 
   if (!restaurant) {
     return (
@@ -52,13 +54,13 @@ export default async function RestaurantDetailPage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
-              Restaurant not found
+              {t('restaurant', 'restaurantNotFound')}
             </h1>
             <Link
               href="/dashboard"
               className="text-blue-600 hover:text-blue-700"
             >
-              Back to Dashboard
+              {t('restaurant', 'backToDashboard')}
             </Link>
           </div>
         </div>
@@ -76,7 +78,7 @@ export default async function RestaurantDetailPage({
             href="/dashboard"
             className="text-blue-600 hover:text-blue-700 text-sm mb-4 inline-block"
           >
-            ← Back to Dashboard
+            ← {t('restaurant', 'backToDashboard')}
           </Link>
         </div>
 
@@ -128,7 +130,7 @@ export default async function RestaurantDetailPage({
                       d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                     />
                   </svg>
-                  Orders
+                  {t('restaurant', 'orders')}
                 </Link>
                 <Link
                   href={`/restaurants/${params.id}/managers`}
@@ -150,7 +152,7 @@ export default async function RestaurantDetailPage({
                       d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  Managers
+                  {t('restaurant', 'managers')}
                 </Link>
                 <Link
                   href={`/restaurants/${params.id}/edit`}
@@ -172,7 +174,7 @@ export default async function RestaurantDetailPage({
                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                     />
                   </svg>
-                  Edit
+                  {t('common', 'edit')}
                 </Link>
                 <div className="flex items-center">
                   <DeleteRestaurantButton restaurantId={params.id} />
@@ -210,7 +212,7 @@ export default async function RestaurantDetailPage({
                     </div>
                     <div>
                       <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                        Phone
+                        {t('restaurant', 'phone')}
                       </p>
                       <p className="text-sm font-semibold text-gray-900">
                         {restaurant.contactInfo.phone}
@@ -243,7 +245,7 @@ export default async function RestaurantDetailPage({
                     </div>
                     <div>
                       <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                        Email
+                        {t('restaurant', 'email')}
                       </p>
                       <p className="text-sm font-semibold text-gray-900">
                         {restaurant.contactInfo.email}
@@ -276,7 +278,7 @@ export default async function RestaurantDetailPage({
                     </div>
                     <div>
                       <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                        Website
+                        {t('restaurant', 'website')}
                       </p>
                       <a
                         href={restaurant.contactInfo.website}
@@ -296,25 +298,25 @@ export default async function RestaurantDetailPage({
         </div>
 
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Menus</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{t('restaurant', 'menus')}</h2>
           <Link
             href={`/restaurants/${params.id}/menus/new`}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+            className="bg-blue-600 text-white px-5 py-2.5 rounded-md text-sm font-medium hover:bg-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
           >
-            Create New Menu
+            {t('menu', 'create')}
           </Link>
         </div>
 
         {menus.length === 0 ? (
           <div className="bg-white shadow rounded-lg p-12 text-center">
             <p className="text-gray-500 text-lg mb-4">
-              No menus created yet.
+              {t('restaurant', 'noMenus')}
             </p>
             <Link
               href={`/restaurants/${params.id}/menus/new`}
-              className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-blue-700"
+              className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
             >
-              Create Your First Menu
+              {t('restaurant', 'createFirstMenu')}
             </Link>
           </div>
         ) : (
@@ -326,17 +328,17 @@ export default async function RestaurantDetailPage({
                 className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
               >
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {menu.name || 'Untitled Menu'}
+                  {menu.name || t('menu', 'untitledMenu')}
                 </h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  {menu.items?.length || 0} items
+                  {menu.items?.length || 0} {t('menu', 'items')}
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">
-                    Token: {menu.token?.substring(0, 8)}...
+                    {t('restaurant', 'token')}: {menu.token?.substring(0, 8)}...
                   </span>
                   <span className="text-blue-600 text-sm font-medium">
-                    Manage →
+                    {t('restaurant', 'manage')} →
                   </span>
                 </div>
               </Link>
