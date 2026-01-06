@@ -3,25 +3,25 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from '@/lib/use-translations';
+import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 
 interface DeleteMenuItemButtonProps {
   menuId: string;
   itemId: string;
+  itemName?: string;
 }
 
 export default function DeleteMenuItemButton({
   menuId,
   itemId,
+  itemName,
 }: DeleteMenuItemButtonProps) {
   const router = useRouter();
   const { t } = useTranslations();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    if (!confirm(t('menu', 'deleteItemConfirm'))) {
-      return;
-    }
-
     setLoading(true);
     try {
       const response = await fetch(`/api/menus/${menuId}/items/${itemId}`, {
@@ -39,17 +39,30 @@ export default function DeleteMenuItemButton({
       alert(t('common', 'unexpectedError'));
     } finally {
       setLoading(false);
+      setIsDialogOpen(false);
     }
   };
 
   return (
-    <button
-      onClick={handleDelete}
-      disabled={loading}
-      className="px-3 py-1.5 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      {loading ? t('common', 'deleting') : t('common', 'delete')}
-    </button>
+    <>
+      <button
+        onClick={() => setIsDialogOpen(true)}
+        disabled={loading}
+        className="px-3 py-1.5 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {loading ? t('common', 'deleting') : t('common', 'delete')}
+      </button>
+      <DeleteConfirmDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={handleDelete}
+        translationKey={{
+          title: 'menu.deleteItem',
+          message: 'menu.deleteItemConfirm',
+        }}
+        itemName={itemName}
+      />
+    </>
   );
 }
 

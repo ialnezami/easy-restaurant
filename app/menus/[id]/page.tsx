@@ -170,6 +170,7 @@ export default async function MenuManagementPage({
                           <DeleteMenuItemButton
                             menuId={params.id}
                             itemId={item._id}
+                            itemName={item.name}
                           />
                         </div>
                       </div>
