@@ -163,7 +163,7 @@ export default async function MenuManagementPage({
                         <div className="flex space-x-2 ml-4">
                           <Link
                             href={`/menus/${params.id}/items/${item._id}/edit`}
-                            className="text-blue-600 hover:text-blue-700 text-sm"
+                            className="px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
                           >
                             {t('common', 'edit')}
                           </Link>
