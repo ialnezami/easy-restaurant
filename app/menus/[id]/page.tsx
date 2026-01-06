@@ -59,7 +59,7 @@ export default async function MenuManagementPage({
     );
   }
 
-  const menuUrl = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/menu/${menu.slug}`;
+  const menuUrl = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/menu/${menu.token}`;
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

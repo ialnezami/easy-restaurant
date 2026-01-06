@@ -16,11 +16,11 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { restaurantId, name, slug } = body;
+    const { restaurantId, name } = body;
 
-    if (!restaurantId || !slug) {
+    if (!restaurantId) {
       return NextResponse.json(
-        { error: 'Restaurant ID and slug are required' },
+        { error: 'Restaurant ID is required' },
         { status: 400 }
       );
     }
@@ -40,13 +40,16 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if slug already exists
-    const existingMenu = await Menu.findOne({ slug });
-    if (existingMenu) {
-      return NextResponse.json(
-        { error: 'A menu with this slug already exists' },
-        { status: 400 }
-      );
+    // Generate unique slug from name (for internal use)
+    const { generateSlug } = await import('@/lib/utils');
+    let slug = name ? generateSlug(name) : 'menu';
+    let slugCounter = 1;
+    let finalSlug = slug;
+    
+    // Ensure slug is unique
+    while (await Menu.findOne({ slug: finalSlug })) {
+      finalSlug = `${slug}-${slugCounter}`;
+      slugCounter++;
     }
 
     // Generate unique token
@@ -63,7 +66,7 @@ export async function POST(request: Request) {
     const menu = await Menu.create({
       restaurant: restaurantId,
       name: name || null,
-      slug,
+      slug: finalSlug,
       token: token!,
       items: [],
     });

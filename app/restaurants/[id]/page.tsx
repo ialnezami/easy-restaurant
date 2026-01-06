@@ -189,7 +189,7 @@ export default async function RestaurantDetailPage({
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">
-                    Slug: {menu.slug}
+                    Token: {menu.token?.substring(0, 8)}...
                   </span>
                   <span className="text-blue-600 text-sm font-medium">
                     Manage →

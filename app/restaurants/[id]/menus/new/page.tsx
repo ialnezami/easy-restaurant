@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import Error from '@/components/Error';
-import { generateSlug } from '@/lib/utils';
 
 export default function NewMenuPage() {
   const router = useRouter();
@@ -13,23 +12,13 @@ export default function NewMenuPage() {
 
   const [formData, setFormData] = useState({
     name: '',
-    slug: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
     setFormData({
-      name: value,
-      slug: generateSlug(value),
-    });
-  };
-
-  const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      slug: generateSlug(e.target.value),
+      name: e.target.value,
     });
   };
 
@@ -37,8 +26,8 @@ export default function NewMenuPage() {
     e.preventDefault();
     setError('');
 
-    if (!formData.slug) {
-      setError('Menu slug is required');
+    if (!formData.name.trim()) {
+      setError('Menu name is required');
       return;
     }
 
@@ -53,7 +42,6 @@ export default function NewMenuPage() {
         body: JSON.stringify({
           restaurantId,
           name: formData.name,
-          slug: formData.slug,
         }),
       });
 
@@ -101,32 +89,33 @@ export default function NewMenuPage() {
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="slug"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Menu Slug (URL) *
-              </label>
-              <div className="mt-1 flex rounded-md shadow-sm">
-                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                  /menu/
-                </span>
-                <input
-                  type="text"
-                  id="slug"
-                  name="slug"
-                  required
-                  value={formData.slug}
-                  onChange={handleSlugChange}
-                  placeholder="unique-menu-slug"
-                  className="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
+            <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-blue-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-blue-800">
+                    Unique Token Generated Automatically
+                  </h3>
+                  <div className="mt-2 text-sm text-blue-700">
+                    <p>
+                      A unique token will be automatically generated for your menu URL.
+                      This token will be used to create the QR code and share your menu.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <p className="mt-2 text-sm text-gray-500">
-                This will be the unique URL for your menu. It will be used to
-                generate the QR code.
-              </p>
             </div>
 
             <div className="flex justify-end space-x-4 pt-6 border-t">
