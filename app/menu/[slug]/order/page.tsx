@@ -5,6 +5,10 @@ import OrderForm from '@/components/OrderForm';
 import Link from 'next/link';
 
 async function getMenuByToken(token: string) {
+  if (!token || token.trim() === '') {
+    return null;
+  }
+
   await connectDB();
   const menu = await Menu.findOne({ token })
     .populate('restaurant')

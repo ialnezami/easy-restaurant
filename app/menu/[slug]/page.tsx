@@ -9,6 +9,10 @@ import Link from 'next/link';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 async function getMenuByToken(token: string) {
+  if (!token || token.trim() === '') {
+    return null;
+  }
+
   await connectDB();
   const menu = await Menu.findOne({ token })
     .populate('restaurant')
