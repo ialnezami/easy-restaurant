@@ -8,6 +8,7 @@ import Link from 'next/link';
 import QRCodeDisplay from '@/components/QRCodeDisplay';
 import MenuUrlCopy from '@/components/MenuUrlCopy';
 import DeleteMenuItemButton from '@/components/DeleteMenuItemButton';
+import { getServerTranslations } from '@/lib/server-translations';
 
 async function getMenu(id: string, userId: string) {
   await connectDB();
@@ -38,6 +39,7 @@ export default async function MenuManagementPage({
   }
 
   const menu = await getMenu(params.id, session.user.id);
+  const { t } = await getServerTranslations();
 
   if (!menu) {
     return (
@@ -45,13 +47,13 @@ export default async function MenuManagementPage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
-              Menu not found
+              {t('menu', 'menuNotFound')}
             </h1>
             <Link
               href="/dashboard"
               className="text-blue-600 hover:text-blue-700"
             >
-              Back to Dashboard
+              {t('menu', 'backToDashboard')}
             </Link>
           </div>
         </div>
@@ -88,7 +90,7 @@ export default async function MenuManagementPage({
             href={`/restaurants/${menu.restaurant._id || menu.restaurant}`}
             className="text-blue-600 hover:text-blue-700 text-sm mb-4 inline-block"
           >
-            ← Back to Restaurant
+            ← {t('menu', 'backToRestaurant')}
           </Link>
         </div>
 
@@ -98,17 +100,17 @@ export default async function MenuManagementPage({
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                    {menu.name || 'Untitled Menu'}
+                    {menu.name || t('menu', 'untitledMenu')}
                   </h1>
                   <p className="text-gray-600">
-                    Restaurant: {menu.restaurant.name || 'Unknown'}
+                    {t('menu', 'restaurantLabel')}: {menu.restaurant.name || t('menu', 'unknown')}
                   </p>
                 </div>
                 <Link
                   href={`/menus/${params.id}/items/new`}
                   className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
                 >
-                  Add Item
+                  {t('menu', 'addItem')}
                 </Link>
               </div>
 
@@ -117,19 +119,19 @@ export default async function MenuManagementPage({
 
             <div className="bg-white shadow rounded-lg p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                Menu Items ({menu.items?.length || 0})
+                {t('menu', 'items')} ({menu.items?.length || 0})
               </h2>
 
               {!menu.items || menu.items.length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-gray-500 text-lg mb-4">
-                    No items in this menu yet.
+                    {t('menu', 'noItems')}
                   </p>
                   <Link
                     href={`/menus/${params.id}/items/new`}
                     className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-blue-700"
                   >
-                    Add Your First Item
+                    {t('menu', 'addFirstItem')}
                   </Link>
                 </div>
               ) : (
@@ -163,7 +165,7 @@ export default async function MenuManagementPage({
                             href={`/menus/${params.id}/items/${item._id}/edit`}
                             className="text-blue-600 hover:text-blue-700 text-sm"
                           >
-                            Edit
+                            {t('common', 'edit')}
                           </Link>
                           <DeleteMenuItemButton
                             menuId={params.id}
@@ -181,11 +183,11 @@ export default async function MenuManagementPage({
           <div className="lg:col-span-1">
             <div className="bg-white shadow rounded-lg p-6 sticky top-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                QR Code
+                {t('menu', 'qrCode')}
               </h2>
               <QRCodeDisplay url={menuUrl} />
               <p className="text-sm text-gray-600 mt-4 text-center">
-                Scan this QR code to view the menu
+                {t('menu', 'scanQRCode')}
               </p>
             </div>
           </div>
