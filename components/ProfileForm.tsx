@@ -9,6 +9,7 @@ interface ProfileFormProps {
     _id: string;
     name: string;
     email: string;
+    role?: string;
   };
 }
 
@@ -159,6 +160,16 @@ export default function ProfileForm({ user }: ProfileFormProps) {
 
         {activeTab === 'profile' ? (
           <form onSubmit={handleProfileSubmit} className="space-y-6">
+            {user.role && (
+              <div className="mb-4 pb-4 border-b border-gray-200">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Role
+                </label>
+                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold capitalize">
+                  {user.role}
+                </span>
+              </div>
+            )}
             <div>
               <label
                 htmlFor="name"
