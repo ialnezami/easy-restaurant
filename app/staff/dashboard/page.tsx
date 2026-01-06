@@ -1,6 +1,8 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/auth';
+import connectDB from '@/lib/mongodb';
+import Restaurant from '@/models/Restaurant';
 import OrderList from '@/components/OrderList';
 
 export default async function StaffDashboardPage() {
@@ -8,6 +10,20 @@ export default async function StaffDashboardPage() {
 
   if (!session?.user) {
     redirect('/auth/login');
+  }
+
+  // Check if user has access to any restaurant with workflow enabled
+  await connectDB();
+  const restaurants = await Restaurant.find({
+    $or: [
+      { owner: session.user.id },
+      { managers: session.user.id },
+    ],
+    workflowEnabled: true,
+  }).limit(1);
+
+  if (restaurants.length === 0) {
+    redirect('/dashboard');
   }
 
   return (

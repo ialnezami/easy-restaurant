@@ -23,6 +23,7 @@ export interface IRestaurant extends Document {
   primaryColor?: string; // Primary brand color (hex)
   secondaryColor?: string; // Secondary brand color (hex)
   defaultLanguage?: string; // Default language for this restaurant (e.g., 'en', 'es', 'fr', 'ar')
+  workflowEnabled?: boolean; // Whether staff workflow is enabled for this restaurant (admin controlled)
   createdAt: Date;
   updatedAt: Date;
 }
@@ -101,6 +102,10 @@ const RestaurantSchema: Schema = new Schema(
       type: String,
       default: 'en', // Default to English
       enum: ['en', 'es', 'fr', 'ar', 'de', 'it', 'pt', 'zh', 'ja', 'ko'],
+    },
+    workflowEnabled: {
+      type: Boolean,
+      default: false, // Workflow disabled by default, must be enabled by admin
     },
   },
   {

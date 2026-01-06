@@ -10,6 +10,7 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const { t } = useTranslations();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [hasWorkflowAccess, setHasWorkflowAccess] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Get user initial
@@ -20,6 +21,24 @@ export default function Navbar() {
     }
     return name[0]?.toUpperCase() || 'U';
   };
+
+  // Check workflow access
+  useEffect(() => {
+    const checkWorkflowAccess = async () => {
+      if (session?.user && (session.user.role === 'manager' || session.user.role === 'owner')) {
+        try {
+          const response = await fetch('/api/user/workflow-status');
+          const data = await response.json();
+          setHasWorkflowAccess(data.hasWorkflowAccess || false);
+        } catch (error) {
+          console.error('Error checking workflow access:', error);
+          setHasWorkflowAccess(false);
+        }
+      }
+    };
+
+    checkWorkflowAccess();
+  }, [session]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -58,7 +77,7 @@ export default function Navbar() {
                     {t('common', 'admin')}
                   </Link>
                 )}
-                {(session.user.role === 'manager' || session.user.role === 'owner') && (
+                {(session.user.role === 'manager' || session.user.role === 'owner') && hasWorkflowAccess && (
                   <Link
                     href="/staff/dashboard"
                     className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
