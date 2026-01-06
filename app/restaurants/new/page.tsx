@@ -6,9 +6,11 @@ import Error from '@/components/Error';
 import ImageUpload from '@/components/ImageUpload';
 import ImageGallery from '@/components/ImageGallery';
 import ColorPicker from '@/components/ColorPicker';
+import { useTranslations } from '@/lib/use-translations';
 
 export default function NewRestaurantPage() {
   const router = useRouter();
+  const { t } = useTranslations();
   const [formData, setFormData] = useState({
     name: '',
     street: '',
@@ -73,24 +75,24 @@ export default function NewRestaurantPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Failed to create restaurant');
+        setError(data.error || t('restaurant', 'failedToCreate'));
         return;
       }
 
       router.push(`/restaurants/${data.restaurant._id}`);
     } catch (err) {
-      setError('An unexpected error occurred');
+      setError(t('restaurant', 'unexpectedError'));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
-          Create New Restaurant
-        </h1>
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+            {t('restaurant', 'create')}
+          </h1>
 
         <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6">
           {error && <Error message={error} />}
@@ -101,7 +103,7 @@ export default function NewRestaurantPage() {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700"
               >
-                Restaurant Name *
+                {t('restaurant', 'name')} *
               </label>
               <input
                 type="text"
@@ -116,7 +118,7 @@ export default function NewRestaurantPage() {
 
             <div className="border-t pt-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">
-                Address
+                {t('restaurant', 'address')}
               </h3>
               <div className="space-y-4">
                 <div>
@@ -124,7 +126,7 @@ export default function NewRestaurantPage() {
                     htmlFor="street"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Street Address *
+                    {t('restaurant', 'streetAddress')} *
                   </label>
                   <input
                     type="text"
@@ -142,7 +144,7 @@ export default function NewRestaurantPage() {
                       htmlFor="city"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      City *
+                      {t('restaurant', 'city')} *
                     </label>
                     <input
                       type="text"
@@ -159,7 +161,7 @@ export default function NewRestaurantPage() {
                       htmlFor="state"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      State
+                      {t('restaurant', 'state')}
                     </label>
                     <input
                       type="text"
@@ -177,7 +179,7 @@ export default function NewRestaurantPage() {
                       htmlFor="zipCode"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      ZIP Code
+                      {t('restaurant', 'zipCode')}
                     </label>
                     <input
                       type="text"
@@ -193,7 +195,7 @@ export default function NewRestaurantPage() {
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Country *
+                      {t('restaurant', 'country')} *
                     </label>
                     <select
                       id="country"
@@ -215,11 +217,11 @@ export default function NewRestaurantPage() {
 
             <div className="border-t pt-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">
-                Brand Colors
+                {t('restaurant', 'brandColors')}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <ColorPicker
-                  label="Primary Color"
+                  label={t('restaurant', 'primaryColor')}
                   value={formData.primaryColor}
                   onChange={(color) =>
                     setFormData({ ...formData, primaryColor: color })
@@ -227,7 +229,7 @@ export default function NewRestaurantPage() {
                   defaultColor="#3B82F6"
                 />
                 <ColorPicker
-                  label="Secondary Color"
+                  label={t('restaurant', 'secondaryColor')}
                   value={formData.secondaryColor}
                   onChange={(color) =>
                     setFormData({ ...formData, secondaryColor: color })
@@ -236,13 +238,13 @@ export default function NewRestaurantPage() {
                 />
               </div>
               <p className="mt-2 text-sm text-gray-500">
-                These colors will be used throughout your menu display to match your brand.
+                {t('restaurant', 'brandColorsDescription')}
               </p>
             </div>
 
             <div className="border-t pt-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">
-                Images
+                {t('restaurant', 'images')}
               </h3>
               <div className="space-y-6">
                 <div>
@@ -251,10 +253,10 @@ export default function NewRestaurantPage() {
                     onChange={(url) =>
                       setFormData({ ...formData, coverImage: url })
                     }
-                    label="Cover Image / Logo (optional)"
+                    label={t('restaurant', 'coverImage')}
                   />
                   <p className="mt-1 text-sm text-gray-500">
-                    This will be used as the main logo or cover image for your restaurant.
+                    {t('restaurant', 'coverImageDescription')}
                   </p>
                 </div>
                 <div>
@@ -263,11 +265,11 @@ export default function NewRestaurantPage() {
                     onChange={(images) =>
                       setFormData({ ...formData, images })
                     }
-                    label="Additional Images (optional)"
+                    label={t('restaurant', 'additionalImages')}
                     maxImages={10}
                   />
                   <p className="mt-1 text-sm text-gray-500">
-                    Add up to 10 additional images to showcase your restaurant.
+                    {t('restaurant', 'additionalImagesDescription')}
                   </p>
                 </div>
               </div>
@@ -275,7 +277,7 @@ export default function NewRestaurantPage() {
 
             <div className="border-t pt-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">
-                Contact Information
+                {t('restaurant', 'contactInformation')}
               </h3>
               <div className="space-y-4">
                 <div>
@@ -283,7 +285,7 @@ export default function NewRestaurantPage() {
                     htmlFor="phone"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Phone
+                    {t('restaurant', 'phone')}
                   </label>
                   <input
                     type="tel"
@@ -299,7 +301,7 @@ export default function NewRestaurantPage() {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Email
+                    {t('restaurant', 'email')}
                   </label>
                   <input
                     type="email"
@@ -315,7 +317,7 @@ export default function NewRestaurantPage() {
                     htmlFor="website"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Website
+                    {t('restaurant', 'website')}
                   </label>
                   <input
                     type="url"
@@ -335,14 +337,14 @@ export default function NewRestaurantPage() {
                 onClick={() => router.back()}
                 className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
               >
-                Cancel
+                {t('common', 'cancel')}
               </button>
               <button
                 type="submit"
                 disabled={loading}
                 className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
               >
-                {loading ? 'Creating...' : 'Create Restaurant'}
+                {loading ? t('restaurant', 'creating') : t('restaurant', 'createRestaurant')}
               </button>
             </div>
           </div>
