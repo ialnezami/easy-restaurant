@@ -42,7 +42,7 @@ export default function DeleteRestaurantButton({
     <>
       <button
         onClick={() => setIsDialogOpen(true)}
-        className="px-3 py-1.5 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
         disabled={loading}
       >
         {loading ? t('common', 'deleting') : t('common', 'delete')}

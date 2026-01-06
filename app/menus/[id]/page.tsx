@@ -108,7 +108,7 @@ export default async function MenuManagementPage({
                 </div>
                 <Link
                   href={`/menus/${params.id}/items/new`}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+                  className="bg-blue-600 text-white px-5 py-2.5 rounded-md text-sm font-medium hover:bg-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
                 >
                   {t('menu', 'addItem')}
                 </Link>
@@ -129,7 +129,7 @@ export default async function MenuManagementPage({
                   </p>
                   <Link
                     href={`/menus/${params.id}/items/new`}
-                    className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-blue-700"
+                    className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
                   >
                     {t('menu', 'addFirstItem')}
                   </Link>
@@ -160,10 +160,10 @@ export default async function MenuManagementPage({
                             </span>
                           )}
                         </div>
-                        <div className="flex space-x-2 ml-4">
+                        <div className="flex gap-3 ml-4">
                           <Link
                             href={`/menus/${params.id}/items/${item._id}/edit`}
-                            className="px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
+                            className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
                           >
                             {t('common', 'edit')}
                           </Link>
