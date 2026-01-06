@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import Restaurant from '@/models/Restaurant';
 import Link from 'next/link';
+import { getServerTranslations } from '@/lib/server-translations';
 
 async function getRestaurants(userId: string, userRole: string) {
   await connectDB();
@@ -34,29 +35,31 @@ export default async function DashboardPage() {
     session.user.role
   );
 
+  const { t } = await getServerTranslations();
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">My Restaurants</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('dashboard', 'myRestaurants')}</h1>
           <Link
             href="/restaurants/new"
             className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
           >
-            Create New Restaurant
+            {t('dashboard', 'createRestaurant')}
           </Link>
         </div>
 
         {restaurants.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg mb-4">
-              You don&apos;t have any restaurants yet.
+              {t('dashboard', 'noRestaurants')}
             </p>
             <Link
               href="/restaurants/new"
               className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-blue-700"
             >
-              Create Your First Restaurant
+              {t('dashboard', 'createFirstRestaurant')}
             </Link>
           </div>
         ) : (
@@ -78,10 +81,10 @@ export default async function DashboardPage() {
                 )}
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">
-                    {restaurant.contactInfo?.phone || 'No phone'}
+                    {restaurant.contactInfo?.phone || t('dashboard', 'noPhone')}
                   </span>
                   <span className="text-blue-600 text-sm font-medium">
-                    View →
+                    {t('dashboard', 'view')} →
                   </span>
                 </div>
               </Link>

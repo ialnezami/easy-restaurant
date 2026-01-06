@@ -17,7 +17,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { name, addresses, contactInfo, coverImage, images, primaryColor, secondaryColor } = body;
+    const { name, addresses, contactInfo, coverImage, images, primaryColor, secondaryColor, defaultLanguage } = body;
 
     if (!name) {
       return NextResponse.json(
@@ -47,6 +47,7 @@ export async function PUT(
     restaurant.images = images || [];
     restaurant.primaryColor = primaryColor || '#3B82F6';
     restaurant.secondaryColor = secondaryColor || '#1E40AF';
+    restaurant.defaultLanguage = defaultLanguage || 'en';
     await restaurant.save();
 
     return NextResponse.json(
@@ -61,6 +62,7 @@ export async function PUT(
           images: restaurant.images,
           primaryColor: restaurant.primaryColor,
           secondaryColor: restaurant.secondaryColor,
+          defaultLanguage: restaurant.defaultLanguage,
         },
       },
       { status: 200 }

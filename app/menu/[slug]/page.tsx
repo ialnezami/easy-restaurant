@@ -47,7 +47,22 @@ export default async function PublicMenuPage({
   searchParams: { table?: string };
 }) {
   const menu = await getMenuByToken(params.slug);
-  const currentLang = await getLanguage();
+  
+  // Get language: check cookie first, then restaurant default, then system default
+  const cookieStore = await (await import('next/headers')).cookies();
+  const langCookie = cookieStore.get('lang');
+  let currentLang = langCookie?.value || menu.restaurant.defaultLanguage || 'en';
+  
+  // Validate language is available
+  const { getAvailableLanguages } = await import('@/lib/i18n');
+  const availableLanguages = await getAvailableLanguages();
+  if (!availableLanguages.includes(currentLang)) {
+    currentLang = menu.restaurant.defaultLanguage || 'en';
+  }
+  if (!availableLanguages.includes(currentLang)) {
+    currentLang = 'en';
+  }
+  
   const tableNumber = searchParams.table || null;
 
   if (!menu) {

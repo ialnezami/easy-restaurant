@@ -3,9 +3,11 @@
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslations } from '@/lib/use-translations';
 
 export default function Navbar() {
   const { data: session, status } = useSession();
+  const { t } = useTranslations();
 
   return (
     <nav className="bg-white shadow-sm border-b">
@@ -19,7 +21,7 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             <LanguageSwitcher />
             {status === 'loading' ? (
-              <div className="text-gray-500">Loading...</div>
+              <div className="text-gray-500">{t('common', 'loading')}</div>
             ) : session ? (
               <>
                 {session.user.role === 'admin' && (
@@ -27,7 +29,7 @@ export default function Navbar() {
                     href="/admin"
                     className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                   >
-                    Admin
+                    {t('common', 'admin')}
                   </Link>
                 )}
                 {(session.user.role === 'manager' || session.user.role === 'owner') && (
@@ -35,26 +37,26 @@ export default function Navbar() {
                     href="/staff/dashboard"
                     className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                   >
-                    Staff Dashboard
+                    {t('common', 'staffDashboard')}
                   </Link>
                 )}
                 <Link
                   href="/dashboard"
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Dashboard
+                  {t('common', 'dashboard')}
                 </Link>
                 <Link
                   href="/profile"
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Profile
+                  {t('common', 'profile')}
                 </Link>
                 <button
                   onClick={() => signOut()}
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Sign Out
+                  {t('common', 'signOut')}
                 </button>
               </>
             ) : (
@@ -63,13 +65,13 @@ export default function Navbar() {
                   href="/auth/login"
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Login
+                  {t('common', 'login')}
                 </Link>
                 <Link
                   href="/auth/register"
                   className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
                 >
-                  Sign Up
+                  {t('common', 'signUp')}
                 </Link>
               </>
             )}

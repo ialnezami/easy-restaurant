@@ -22,6 +22,7 @@ export interface IRestaurant extends Document {
   images?: string[]; // Array of additional images
   primaryColor?: string; // Primary brand color (hex)
   secondaryColor?: string; // Secondary brand color (hex)
+  defaultLanguage?: string; // Default language for this restaurant (e.g., 'en', 'es', 'fr', 'ar')
   createdAt: Date;
   updatedAt: Date;
 }
@@ -95,6 +96,11 @@ const RestaurantSchema: Schema = new Schema(
     secondaryColor: {
       type: String,
       default: '#1E40AF', // Default darker blue
+    },
+    defaultLanguage: {
+      type: String,
+      default: 'en', // Default to English
+      enum: ['en', 'es', 'fr', 'ar', 'de', 'it', 'pt', 'zh', 'ja', 'ko'],
     },
   },
   {

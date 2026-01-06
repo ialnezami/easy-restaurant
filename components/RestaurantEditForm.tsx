@@ -6,6 +6,7 @@ import Error from './Error';
 import ImageUpload from './ImageUpload';
 import ImageGallery from './ImageGallery';
 import ColorPicker from './ColorPicker';
+import { supportedLanguages } from '@/lib/i18n-constants';
 
 interface RestaurantEditFormProps {
   restaurant: {
@@ -27,6 +28,7 @@ interface RestaurantEditFormProps {
     images?: string[];
     primaryColor?: string;
     secondaryColor?: string;
+    defaultLanguage?: string;
   };
 }
 
@@ -48,6 +50,7 @@ export default function RestaurantEditForm({
     images: restaurant.images || [],
     primaryColor: restaurant.primaryColor || '#3B82F6',
     secondaryColor: restaurant.secondaryColor || '#1E40AF',
+    defaultLanguage: restaurant.defaultLanguage || 'en',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -92,6 +95,7 @@ export default function RestaurantEditForm({
           images: formData.images,
           primaryColor: formData.primaryColor,
           secondaryColor: formData.secondaryColor,
+          defaultLanguage: formData.defaultLanguage,
         }),
       });
 
@@ -343,6 +347,36 @@ export default function RestaurantEditForm({
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-gray-900"
               />
             </div>
+          </div>
+        </div>
+
+        <div className="border-t pt-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Language Settings
+          </h3>
+          <div>
+            <label
+              htmlFor="defaultLanguage"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Default Language
+            </label>
+            <select
+              id="defaultLanguage"
+              name="defaultLanguage"
+              value={formData.defaultLanguage}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-gray-900"
+            >
+              {supportedLanguages.map((lang) => (
+                <option key={lang.code} value={lang.code}>
+                  {lang.flag} {lang.name}
+                </option>
+              ))}
+            </select>
+            <p className="mt-2 text-sm text-gray-500">
+              This will be the default language for your restaurant&apos;s menu when customers visit.
+            </p>
           </div>
         </div>
 
